@@ -1,9 +1,13 @@
 import React from "react";
+import Game from "./Game/Game";
 
 const LandingPage = () => {
 
     return (
-        <h1> This is the landing page.</h1>
+        <div>
+            <h1> This is the landing page.</h1>
+            <Game />
+        </div>
     )
 }
 
