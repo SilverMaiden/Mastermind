@@ -40,4 +40,33 @@
 .norse {
     font-family: floki;
     font: floki;
+    color:white;
+    background-color: black;
+    font-size: 5rem;
+}
+
+
+button {
+    color: white;
+    background-color: blue;
+}
+
+.inputContainer {
+    display: flex;
+    flex-flow: row nowrap;
+    width: 50%;
+    justify-content: space-around;
+
+}
+
+.input {
+    padding: 5%;
+    width: 100px;
+
+}
+
+.container {
+    display: flex;
+    flex-flow: column wrap;
+    align-items: center;
 }
