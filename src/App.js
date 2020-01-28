@@ -19,10 +19,16 @@ function App() {
             third: 0,
             fourth: 0
         },
+        easyMode: false,
+        hardMode: false,
     });
 
     const addChosen = (num, location) => {
         setData({...data, chosenNums: {...data.chosenNums, [location]: num }})
+    }
+
+    const selectMode = (mode) => {
+        setData({...data, [mode]: true});
     }
 
     useEffect(() => {
@@ -41,7 +47,7 @@ function App() {
     }, [])
 
   return (
-    <GameContext.Provider value={{data, addChosen}}>
+    <GameContext.Provider value={{data, addChosen, selectMode}}>
         <Router>
             <div className="App">
             {console.log(data)}

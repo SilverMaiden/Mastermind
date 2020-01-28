@@ -1,7 +1,7 @@
 import React, {useState, useContext} from "react";
 import {GameContext} from "../../contexts/GameContext";
 import NumberSlider from "./NumberSlider";
-import Timer from "./Timer";
+import Countdown from 'react-countdown';
 import Attempts from "./Attempts";
 import Lose from "../Lose";
 import Win from "../Win";
@@ -13,7 +13,7 @@ const Game = (props) => {
         rightPositions: 0,
         attempts: 10,
         pass: false,
-        firstAttempt: true,
+        timerRunOut: false,
     });
 
     const [rightAnswers, setRightAnswers]= useState({
@@ -22,8 +22,12 @@ const Game = (props) => {
         third: false,
         fourth: false
     })
-    console.log(gameState)
+    console.log(gameState);
 
+    const handleTimer = () => {
+        setGameState({...gameState, timerRunOut: true})
+
+    }
 
     const handleSubmit = () => {
         //Compare data.randomNums with data.chosenNums
@@ -31,11 +35,6 @@ const Game = (props) => {
         //
         let firstAttemptSwitch;
         setGameState({...gameState, rightNums: 0, rightPositions: 0})
-        if (gameState.firstAttempt === true) {
-            firstAttemptSwitch = false;
-        } else {
-            firstAttemptSwitch = false;
-        }
 
         //Initialize variables;
         let correctPositions = 0;
@@ -108,12 +107,19 @@ const Game = (props) => {
 
     return (
         <div>
+
         {gameState.pass ? <Win /> :
             <div>
-            {gameState.attempts !== 0 ?
+
+            {gameState.attempts !== 0  && gameState.timerRunOut === false ?
                 <div className="container">
                     <h1> This is the game page.</h1>
                     <Attempts data={gameState}/>
+                    {data.hardMode ?
+                        <Countdown date={Date.now() + 10000} onComplete={handleTimer} />
+                        : <p />
+                    }
+
 
                     <div className="inputContainer">
                         <NumberSlider data={data} addChosen={addChosen} location={"first"} />
