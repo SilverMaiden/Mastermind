@@ -9,7 +9,7 @@ import Lose from "../Lose";
 import Win from "../Win";
 
 const Game = (props) => {
-    const {data } = useContext(GameContext);
+    const {data} = useContext(GameContext);
     const [gameState, setGameState] = useState({
         randomNums: [],
         timerRunOut: false,
@@ -17,13 +17,20 @@ const Game = (props) => {
         values: [0, 0, 0, 0],
         pass: false,
         attempts: 10,
-        start: Date.now(),
+        start: "",
         history: [],
         loading: true,
     });
 
     //Destructured Values
-    const { letters, values, randomNums, pass, attempts, history, loading} = gameState;
+    const { letters,
+        values,
+        randomNums,
+        pass,
+        attempts,
+        history,
+        loading
+    } = gameState;
 
     //
     //GET random numbers
@@ -37,7 +44,11 @@ const Game = (props) => {
                     parseInt(element)
                 ))
 
-                setGameState({...gameState, randomNums: intArr, loading: false })
+                setGameState({...gameState,
+                             randomNums: intArr,
+                             loading: false,
+                             start: Date.now()
+                })
             }).catch(error => {
                 console.log(error.message);
             })
@@ -63,21 +74,19 @@ const Game = (props) => {
     const handleSubmit = () => {
         let correctPos = 0;
         let correctNums = 0;
+        let numsArr = [];
         let updatedAttempts = attempts - 1;
-        let updateStr = letters[values[0]] + letters[values[1]] + letters[values[2]] + letters[values[3]];
-        let updatedHistory = history.concat(updateStr)
-
         const positionCheck = (index) => {
                 if (values[index] === randomNums[index]) {
                         correctPos += 1;
                         console.log(correctPos);
                     }
                 }
-        setGameState({...gameState, attempts: (gameState.attempts - 1), history: updatedHistory.reverse()});
-
-        randomNums.map(element => {
-            if (randomNums.includes(element)) {
+        values.map(element => {
+            if (randomNums.includes(element) && !numsArr.includes(element)) {
                 correctNums += 1;
+                //console.log("been hit")
+                numsArr.push(element);
             }
         })
 
@@ -85,10 +94,33 @@ const Game = (props) => {
         positionCheck(1);
         positionCheck(2);
         positionCheck(3);
+        console.log(numsArr);
         console.log(`numbers in correct position: ${correctPos}`);
         console.log(`numbers in submission that are in the correct number: ${correctNums}`);
         console.log(`randomNums: ${randomNums[0]}, ${randomNums[1]}, ${randomNums[2]}, ${randomNums[3]}`);
         console.log(`attempts remaining: ${attempts}`);
+
+        const createHint = (nums, pos) => {
+            if (nums > pos && nums > 0) {
+                return `One or more of your numbers is in the chosen four, but none are in the right position.`
+            } else if (nums === 0) {
+                return `None of your numners are in the chosen four, and none in the right position.`
+            } else {
+                return `One or more of your numbers is in the chosen four, and ${pos} are in the right position.`
+
+            }
+
+        }
+        let update = [letters[values[0]] + letters[values[1]] + letters[values[2]] + letters[values[3]], createHint(correctNums, correctPos)];
+        let updatedHistory = history; // unshifting history would try to modify the original string
+        updatedHistory.unshift(update);
+
+
+        //Set game state
+        setGameState({...gameState,
+                     attempts: (gameState.attempts - 1),
+                     history: updatedHistory});
+
 
         //Time to check for success!
         if (correctPos === 4) {

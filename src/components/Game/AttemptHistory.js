@@ -5,9 +5,12 @@ const AttemptHistory = (props) => {
         <div>
         {props.history.length > 0 ?
             props.history.map(element => (
-                <p className="norse">
-                    {element}
-                </p>
+                <div>
+                    <h6> {element[1]} </h6>
+                    <p className="norse">
+                        {element[0]}
+                    </p>
+                </div>
                 )
             ) : <p />}
 
