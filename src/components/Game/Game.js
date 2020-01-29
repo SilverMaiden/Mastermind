@@ -18,10 +18,12 @@ const Game = (props) => {
         pass: false,
         attempts: 10,
         start: Date.now(),
+        history: [],
+        loading: true,
     });
 
     //Destructured Values
-    const { letters, values, randomNums, pass, attempts } = gameState;
+    const { letters, values, randomNums, pass, attempts, history, loading} = gameState;
 
     //
     //GET random numbers
@@ -35,7 +37,7 @@ const Game = (props) => {
                     parseInt(element)
                 ))
 
-                setGameState({...gameState, randomNums: intArr })
+                setGameState({...gameState, randomNums: intArr, loading: false })
             }).catch(error => {
                 console.log(error.message);
             })
@@ -43,25 +45,27 @@ const Game = (props) => {
     }, [])
 
     const handleTimer = () => {
-        setGameState({...gameState, timerRunOut: true})
+        setGameState({...gameState, timerRunOut: true});
     }
 
     const handleClickUp = (index) => {
         let newArr = gameState.values // the array of values, which we want to modify at a particular index.
-        newArr[index] = (newArr[index] === 7 ? 0 : newArr[index] + 1)
-        setGameState({...gameState, values: newArr})
+        newArr[index] = (newArr[index] === 7 ? 0 : newArr[index] + 1);
+        setGameState({...gameState, values: newArr});
     }
 
     const handleClickDown = (index) => {
             let newArr = gameState.values // the array of values, which we want to modify at a particular index.
-            newArr[index] = (newArr[index] === 0 ? 7 : newArr[index] - 1)
-            setGameState({...gameState, values: newArr})
+            newArr[index] = (newArr[index] === 0 ? 7 : newArr[index] - 1);
+            setGameState({...gameState, values: newArr});
     }
 
     const handleSubmit = () => {
         let correctPos = 0;
         let correctNums = 0;
         let updatedAttempts = attempts - 1;
+        let updateStr = letters[values[0]] + letters[values[1]] + letters[values[2]] + letters[values[3]];
+        let updatedHistory = history.concat(updateStr)
 
         const positionCheck = (index) => {
                 if (values[index] === randomNums[index]) {
@@ -69,40 +73,39 @@ const Game = (props) => {
                         console.log(correctPos);
                     }
                 }
-
-
-        setGameState({...gameState, attempts: (gameState.attempts - 1)});
+        setGameState({...gameState, attempts: (gameState.attempts - 1), history: updatedHistory.reverse()});
 
         randomNums.map(element => {
             if (randomNums.includes(element)) {
                 correctNums += 1;
-        }
+            }
         })
 
-
-        positionCheck(0)
-        positionCheck(1)
-        positionCheck(2)
-        positionCheck(3)
+        positionCheck(0);
+        positionCheck(1);
+        positionCheck(2);
+        positionCheck(3);
         console.log(`numbers in correct position: ${correctPos}`);
-        console.log(`numbers in submission that are in the correct number: ${correctNums}`)
-        console.log(`randomNums: ${randomNums[0]}, ${randomNums[1]}, ${randomNums[2]}, ${randomNums[3]}`)
-        console.log(`attempts remaining: ${attempts}`)
-        //Time to check for success!
+        console.log(`numbers in submission that are in the correct number: ${correctNums}`);
+        console.log(`randomNums: ${randomNums[0]}, ${randomNums[1]}, ${randomNums[2]}, ${randomNums[3]}`);
+        console.log(`attempts remaining: ${attempts}`);
 
+        //Time to check for success!
         if (correctPos === 4) {
-            setGameState({...gameState, pass: true})
+            setGameState({...gameState, pass: true});
         }
     }
 
     return (
         <div >
+        {loading ? <h1> Loading...</h1> :
+            <div>
             {pass ? <Win /> :
                 <div>
                     {attempts !== 0  && gameState.timerRunOut !== true ?
                         <div className="container">
                             <h1> This is the Game page</h1>
-                            {console.log(data.hardMode)}
+                            {console.log(randomNums)}
                             {data.hardMode ?
                                 <Countdown date={gameState.start + 10000} onComplete={handleTimer} />
                             : <p> </p>}
@@ -137,10 +140,13 @@ const Game = (props) => {
                                 </p>
                             </div>
                         <button onClick={handleSubmit}> submit</button>
+                        <AttemptHistory history={history} />
                         </div>
                 : <Lose />
                     } </div>
             }
+            </div>
+        }
 
             </div>
 

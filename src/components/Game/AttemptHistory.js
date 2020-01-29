@@ -1,12 +1,10 @@
 import React, {useContext} from "react";
-import {GameContext} from "../../contexts/GameContext";
 
-const AttemptHistory = () => {
-    const {data} = useContext(GameContext);
+const AttemptHistory = (props) => {
     return (
         <div>
-        {data.attemptHistory ?
-            data.attemptHistory.map(element => (
+        {props.history.length > 0 ?
+            props.history.map(element => (
                 <p className="norse">
                     {element}
                 </p>
