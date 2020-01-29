@@ -17,12 +17,12 @@ const Game = (props) => {
         values: [0, 0, 0, 0],
         pass: false,
         attempts: 10,
+        start: Date.now(),
     });
 
     //Destructured Values
     const { letters, values, randomNums, pass, attempts } = gameState;
 
-    let ARR = [];
     //
     //GET random numbers
     useEffect(() => {
@@ -35,8 +35,7 @@ const Game = (props) => {
                     parseInt(element)
                 ))
 
-                ARR = intArr;
-                //setGameState({...gameState, randomNums: intArr })
+                setGameState({...gameState, randomNums: intArr })
             }).catch(error => {
                 console.log(error.message);
             })
@@ -45,27 +44,18 @@ const Game = (props) => {
 
     const handleTimer = () => {
         setGameState({...gameState, timerRunOut: true})
-
     }
 
     const handleClickUp = (index) => {
-        if (values[index] < 7) {
-            let newArr = gameState.values // the array of values, which we want to modify at a particular index.
-            let newValue = newArr[index] + 1
-            newArr[index] = newValue;
-            setGameState({...gameState, values: newArr})
-            console.log(values)
-        }
+        let newArr = gameState.values // the array of values, which we want to modify at a particular index.
+        newArr[index] = (newArr[index] === 7 ? 0 : newArr[index] + 1)
+        setGameState({...gameState, values: newArr})
     }
 
     const handleClickDown = (index) => {
-        if (values[index] > 0) {
             let newArr = gameState.values // the array of values, which we want to modify at a particular index.
-            let newValue = newArr[index] - 1
-            newArr[index] = newValue;
+            newArr[index] = (newArr[index] === 0 ? 7 : newArr[index] - 1)
             setGameState({...gameState, values: newArr})
-            console.log(values)
-        }
     }
 
     const handleSubmit = () => {
@@ -107,14 +97,14 @@ const Game = (props) => {
 
     return (
         <div >
-        {console.log(ARR)}
             {pass ? <Win /> :
                 <div>
-                    {attempts !== 0  && gameState.timerRunOut === false ?
+                    {attempts !== 0  && gameState.timerRunOut !== true ?
                         <div className="container">
                             <h1> This is the Game page</h1>
+                            {console.log(data.hardMode)}
                             {data.hardMode ?
-                                <Countdown date={Date.now() + 10000} onComplete={handleTimer} />
+                                <Countdown date={gameState.start + 10000} onComplete={handleTimer} />
                             : <p> </p>}
                             {attempts === 10 ?
                                 <h3> Enter the correct combination</h3> :
@@ -123,27 +113,27 @@ const Game = (props) => {
                             <h6> Attempts remaining: {attempts}</h6>
                             <div className="inputContainer">
                                 <p className="norse input">
-                                    <button onClick={() => handleClickUp(0)}> ^</button>
+                                    <button onClick={() => handleClickUp(0)}>^</button>
                                     {letters[values[0]]}
-                                    <button onClick={() => handleClickDown(0)}> v</button>
+                                    <button onClick={() => handleClickDown(0)}>v</button>
                                 </p>
 
                                 <p className="norse input">
-                                    <button onClick={() => handleClickUp(1)}> ^</button>
+                                    <button onClick={() => handleClickUp(1)}>^</button>
                                     {letters[values[1]]}
-                                    <button onClick={() => handleClickDown(1)}> v</button>
+                                    <button onClick={() => handleClickDown(1)}>v</button>
                                 </p>
 
                                 <p className="norse input">
-                                    <button onClick={() => handleClickUp(2)}> ^</button>
+                                    <button onClick={() => handleClickUp(2)}>^</button>
                                     {letters[values[2]]}
-                                    <button onClick={() => handleClickDown(2)}> v</button>
+                                    <button onClick={() => handleClickDown(2)}>v</button>
                                 </p>
 
                                 <p className="norse input">
-                                    <button onClick={() => handleClickUp(3)}> ^</button>
+                                    <button onClick={() => handleClickUp(3)}>^</button>
                                     {letters[values[3]]}
-                                    <button onClick={() => handleClickDown(3)}> v</button>
+                                    <button onClick={() => handleClickDown(3)}>v</button>
                                 </p>
                             </div>
                         <button onClick={handleSubmit}> submit</button>
