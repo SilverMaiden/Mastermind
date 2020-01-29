@@ -60,8 +60,14 @@ button {
 }
 
 .input {
-    padding: 5%;
+    display: flex;
+    flex-flow: column wrap;
+    align-items: center;
+
+    padding: 2%;
+    margin: 2%;
     width: 100px;
+    border: solid 2px pink;
 
 }
 

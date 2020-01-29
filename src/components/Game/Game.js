@@ -1,137 +1,121 @@
-import React, {useState, useContext} from "react";
+import React, {useState, useEffect, useContext} from "react";
+import axios from 'axios';
 import {GameContext} from "../../contexts/GameContext";
 import NumberSlider from "./NumberSlider";
 import Countdown from 'react-countdown';
 import Attempts from "./Attempts";
+import AttemptHistory from "./AttemptHistory";
 import Lose from "../Lose";
 import Win from "../Win";
 
 const Game = (props) => {
-    const {data, addChosen} = useContext(GameContext);
+    const {data } = useContext(GameContext);
     const [gameState, setGameState] = useState({
-        rightNums: 0,
-        rightPositions: 0,
-        attempts: 10,
-        pass: false,
+        randomNums: [],
         timerRunOut: false,
+        letters: ["a", "b", "c", "d", "e", "f","g", "h"],
+        values: [0, 0, 0, 0]
     });
+    const { letters, values, randomNums } = gameState;
+    //
+    //GET random numbers
+    useEffect(() => {
+        axios.get("https://www.random.org/integers/?num=4&min=1&max=6&col=1&base=10&format=plain&rnd=new")
+            .then(response => {
+                let arrayFormat = response.data.split("").filter(element => (
+                    element in ["0", "1", "2", "3", "4", "5", "6", "7"]
+                ))
+                let intArr = arrayFormat.map(element => (
+                    parseInt(element)
+                ))
 
-    const [rightAnswers, setRightAnswers]= useState({
-        first: false,
-        second: false,
-        third: false,
-        fourth: false
-    })
-    console.log(gameState);
+                setGameState({...gameState, randomNums: intArr })
+            }).catch(error => {
+                console.log(error.message);
+            })
+
+    }, [])
 
     const handleTimer = () => {
         setGameState({...gameState, timerRunOut: true})
 
     }
 
-    const handleSubmit = () => {
-        //Compare data.randomNums with data.chosenNums
-        //Reset rightNums and rightPositions to 0
-        //
-        let firstAttemptSwitch;
-        setGameState({...gameState, rightNums: 0, rightPositions: 0})
-
-        //Initialize variables;
-        let correctPositions = 0;
-        let correctNums = 0;
-        let valid = true;
-        let validFirst = false;
-        let validSecond = false
-        let validThird = false;
-        let validFourth = false;
-
-        //Creating an array of answers the use has chosen
-        //to be able to use array methods
-        let chosenAnswersArr = [data.chosenNums.first,
-            data.chosenNums.second,
-            data.chosenNums.third,
-            data.chosenNums.fourth
-        ]
-
-        //On submit, attempts will decrease by 1
-        let updatedAttempts = gameState.attempts - 1;
-
-        //Checking each position for correct answer
-        if (data.randomNums[0] === data.chosenNums.first) {
-            correctPositions += 1;
-            validFirst = true;
-        }
-        if (data.randomNums[1] === data.chosenNums.second) {
-            correctPositions += 1;
-            validSecond = true;
-        }
-
-        if (data.randomNums[2] === data.chosenNums.third) {
-            correctPositions += 1;
-            validThird = true;
-        }
-
-        if (data.randomNums[3] === data.chosenNums.fourth) {
-            correctPositions += 1;
-            validFourth = true;
-        }
-
-        //Checking chosen answer for correctly chosen numbers (but not positions)
-        chosenAnswersArr.forEach(num => {
-            if (data.randomNums.includes(num)) {
-                correctNums += 1;
-            }
-        })
-
-        setRightAnswers({...rightAnswers,
-                        first: validFirst,
-                        second: validSecond,
-                        third: validThird,
-                        fourth: validFourth
-        })
-
-        setGameState({...gameState,
-                     attempts: updatedAttempts,
-                     rightNums: correctNums,
-                     rightPositions: correctPositions,
-                     firstAttempt: firstAttemptSwitch,
-        });
-
-        if (correctPositions === 4) {
-            setGameState({...gameState, pass: true})
-        } else {
-            console.log("Sorry, you got it wrong.");
-            console.log(`Attempts remaining: ${gameState.attempts}`)
+    const handleClickUp = (index) => {
+        if (values[index] < 7) {
+            let newArr = gameState.values // the array of values, which we want to modify at a particular index.
+            let newValue = newArr[index] + 1
+            newArr[index] = newValue;
+            setGameState({...gameState, values: newArr})
+            console.log(values)
         }
     }
 
-    return (
-        <div>
-
-        {gameState.pass ? <Win /> :
-            <div>
-
-            {gameState.attempts !== 0  && gameState.timerRunOut === false ?
-                <div className="container">
-                    <h1> This is the game page.</h1>
-                    <Attempts data={gameState}/>
-                    {data.hardMode ?
-                        <Countdown date={Date.now() + 10000} onComplete={handleTimer} />
-                        : <p />
-                    }
-
-
-                    <div className="inputContainer">
-                        <NumberSlider data={data} addChosen={addChosen} location={"first"} />
-                        <NumberSlider data={data} addChosen={addChosen} location={"second"} />
-                        <NumberSlider data={data} addChosen={addChosen} location={"third"} />
-                        <NumberSlider data={data} addChosen={addChosen} location={"fourth"} />
-                    </div>
-                    <button onClick={handleSubmit}> Submit </button>
-                </div> : <Lose />
-            }
-            </div>
+    const handleClickDown = (index) => {
+        if (values[index] > 0) {
+            let newArr = gameState.values // the array of values, which we want to modify at a particular index.
+            let newValue = newArr[index] - 1
+            newArr[index] = newValue;
+            setGameState({...gameState, values: newArr})
+            console.log(values)
         }
+    }
+
+    const handleSubmit = () => {
+        let correctPos = 0;
+        let correctNums = 0;
+        const positionCheck = (index) => {
+                if (values[index] === randomNums[index]) {
+                        correctPos += 1;
+                        console.log(correctPos);
+                    }
+                }
+
+        randomNums.map(element => {
+            if (randomNums.includes(element)) {
+                correctNums += 1;
+        }
+        })
+
+
+        positionCheck(0)
+        positionCheck(1)
+        positionCheck(2)
+        positionCheck(3)
+        console.log(`numbers in correct position: ${correctPos}`);
+        console.log(`numbers in submission that are in the correct number: ${correctNums}`)
+        console.log(`randomNums: ${randomNums[0]}, ${randomNums[1]}, ${randomNums[2]}, ${randomNums[3]}`)
+        }
+
+    return (
+        <div className="container">
+            <h1> This is the Game page</h1>
+            <div className="inputContainer">
+                <p className="norse input">
+                    <button onClick={() => handleClickUp(0)}> ^</button>
+                    {letters[values[0]]}
+                    <button onClick={() => handleClickDown(0)}> v</button>
+                </p>
+
+                <p className="norse input">
+                    <button onClick={() => handleClickUp(1)}> ^</button>
+                    {letters[values[1]]}
+                    <button onClick={() => handleClickDown(1)}> v</button>
+                </p>
+
+                <p className="norse input">
+                    <button onClick={() => handleClickUp(2)}> ^</button>
+                    {letters[values[2]]}
+                    <button onClick={() => handleClickDown(2)}> v</button>
+                </p>
+
+                <p className="norse input">
+                    <button onClick={() => handleClickUp(3)}> ^</button>
+                    {letters[values[3]]}
+                    <button onClick={() => handleClickDown(3)}> v</button>
+                </p>
+            </div>
+            <button onClick={handleSubmit}> submit</button>
         </div>
     )
 }
