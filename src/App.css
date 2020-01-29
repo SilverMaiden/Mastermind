@@ -2,6 +2,38 @@
   text-align: center;
 }
 
+body {
+  background: url("./assets/background.png");
+  background-size: cover;
+  color: white;
+}
+
+.myBox {
+    backdrop-filter: blur(8px) brightness(50%);
+    -webkit-backdrop-filter: blur(8px) brightness(50%);
+    background-blend-mode: darken;
+    border: solid black 0.125px;
+    display: flex;
+    border-radius: 10px;
+    flex-flow: column nowrap;
+    align-items: center;
+    padding: 2%;
+    margin-top: 5%;
+    width: 100%;
+    color: white;
+    transition: height 3s ease-in;
+	-webkit-box-shadow:0 0 10px rgba(0, 0, 0, 0.5);
+	-moz-box-shadow:0 0 10px rgba(0, 0, 0, 0.5);
+	box-shadow:0 0 10px rgba(0, 0, 0, 0.5);
+
+}
+
+.position {
+    display: flex;
+    flex-flow: column wrap;
+}
+    align-items: center;
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;
@@ -46,33 +78,4 @@
 }
 
 
-button {
-    color: white;
-    background-color: blue;
-}
 
-.inputContainer {
-    display: flex;
-    flex-flow: row nowrap;
-    width: 50%;
-    justify-content: space-around;
-
-}
-
-.input {
-    display: flex;
-    flex-flow: column wrap;
-    align-items: center;
-
-    padding: 2%;
-    margin: 2%;
-    width: 100px;
-    border: solid 2px pink;
-
-}
-
-.container {
-    display: flex;
-    flex-flow: column wrap;
-    align-items: center;
-}

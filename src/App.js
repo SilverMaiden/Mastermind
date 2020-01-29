@@ -1,6 +1,7 @@
 import React, {useEffect, useState, useReducer} from 'react';
 import logo from './logo.svg';
 import './App.css';
+import './css/index.css';
 import LandingPage from "./components/LandingPage";
 import Game from "./components/Game/Game";
 import Highscores from "./components/Highscores";

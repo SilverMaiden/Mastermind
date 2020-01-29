@@ -129,9 +129,10 @@ const Game = (props) => {
     }
 
     return (
-        <div >
+        <div className="game-page">
+        <div className="myBox" >
         {loading ? <h1> Loading...</h1> :
-            <div>
+            <div className="position">
             {pass ? <Win /> :
                 <div>
                     {attempts !== 0  && gameState.timerRunOut !== true ?
@@ -180,6 +181,7 @@ const Game = (props) => {
             </div>
         }
 
+            </div>
             </div>
 
 
