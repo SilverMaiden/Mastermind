@@ -14,9 +14,13 @@ const Game = (props) => {
         randomNums: [],
         timerRunOut: false,
         letters: ["a", "b", "c", "d", "e", "f","g", "h"],
-        values: [0, 0, 0, 0]
+        values: [0, 0, 0, 0],
+        pass: false,
+        attempts: 10,
     });
-    const { letters, values, randomNums } = gameState;
+
+    //Destructured Values
+    const { letters, values, randomNums, pass, attempts } = gameState;
     //
     //GET random numbers
     useEffect(() => {
@@ -64,12 +68,17 @@ const Game = (props) => {
     const handleSubmit = () => {
         let correctPos = 0;
         let correctNums = 0;
+        let updatedAttempts = attempts - 1;
+
         const positionCheck = (index) => {
                 if (values[index] === randomNums[index]) {
                         correctPos += 1;
                         console.log(correctPos);
                     }
                 }
+
+
+        setGameState({...gameState, attempts: (gameState.attempts - 1)});
 
         randomNums.map(element => {
             if (randomNums.includes(element)) {
@@ -85,38 +94,54 @@ const Game = (props) => {
         console.log(`numbers in correct position: ${correctPos}`);
         console.log(`numbers in submission that are in the correct number: ${correctNums}`)
         console.log(`randomNums: ${randomNums[0]}, ${randomNums[1]}, ${randomNums[2]}, ${randomNums[3]}`)
+        console.log(`attempts remaining: ${attempts}`)
+        //Time to check for success!
+
+        if (correctPos === 4) {
+            setGameState({...gameState, pass: true})
         }
+    }
 
     return (
-        <div className="container">
-            <h1> This is the Game page</h1>
-            <div className="inputContainer">
-                <p className="norse input">
-                    <button onClick={() => handleClickUp(0)}> ^</button>
-                    {letters[values[0]]}
-                    <button onClick={() => handleClickDown(0)}> v</button>
-                </p>
+        <div >
 
-                <p className="norse input">
-                    <button onClick={() => handleClickUp(1)}> ^</button>
-                    {letters[values[1]]}
-                    <button onClick={() => handleClickDown(1)}> v</button>
-                </p>
 
-                <p className="norse input">
-                    <button onClick={() => handleClickUp(2)}> ^</button>
-                    {letters[values[2]]}
-                    <button onClick={() => handleClickDown(2)}> v</button>
-                </p>
+            {pass ? <Win /> :
+                <div>
+                    {attempts !== 0 ?
+                        <div className="container">
+                            <h1> This is the Game page</h1>
+                            <h6> Attempts remaining: {attempts}</h6>
+                            <div className="inputContainer">
+                                <p className="norse input">
+                                    <button onClick={() => handleClickUp(0)}> ^</button>
+                                    {letters[values[0]]}
+                                    <button onClick={() => handleClickDown(0)}> v</button>
+                                </p>
 
-                <p className="norse input">
-                    <button onClick={() => handleClickUp(3)}> ^</button>
-                    {letters[values[3]]}
-                    <button onClick={() => handleClickDown(3)}> v</button>
-                </p>
-            </div>
-            <button onClick={handleSubmit}> submit</button>
-        </div>
+                                <p className="norse input">
+                                    <button onClick={() => handleClickUp(1)}> ^</button>
+                                    {letters[values[1]]}
+                                    <button onClick={() => handleClickDown(1)}> v</button>
+                                </p>
+
+                                <p className="norse input">
+                                    <button onClick={() => handleClickUp(2)}> ^</button>
+                                    {letters[values[2]]}
+                                    <button onClick={() => handleClickDown(2)}> v</button>
+                                </p>
+
+                                <p className="norse input">
+                                    <button onClick={() => handleClickUp(3)}> ^</button>
+                                    {letters[values[3]]}
+                                    <button onClick={() => handleClickDown(3)}> v</button>
+                                </p>
+                            </div>
+                        <button onClick={handleSubmit}> submit</button>
+                        </div>
+                : <Lose />
+                    } </div>
+            } </div>
     )
 }
 
