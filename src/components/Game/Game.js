@@ -21,6 +21,8 @@ const Game = (props) => {
 
     //Destructured Values
     const { letters, values, randomNums, pass, attempts } = gameState;
+
+    let ARR = [];
     //
     //GET random numbers
     useEffect(() => {
@@ -33,7 +35,8 @@ const Game = (props) => {
                     parseInt(element)
                 ))
 
-                setGameState({...gameState, randomNums: intArr })
+                ARR = intArr;
+                //setGameState({...gameState, randomNums: intArr })
             }).catch(error => {
                 console.log(error.message);
             })
@@ -104,13 +107,19 @@ const Game = (props) => {
 
     return (
         <div >
-
-
+        {console.log(ARR)}
             {pass ? <Win /> :
                 <div>
-                    {attempts !== 0 ?
+                    {attempts !== 0  && gameState.timerRunOut === false ?
                         <div className="container">
                             <h1> This is the Game page</h1>
+                            {data.hardMode ?
+                                <Countdown date={Date.now() + 10000} onComplete={handleTimer} />
+                            : <p> </p>}
+                            {attempts === 10 ?
+                                <h3> Enter the correct combination</h3> :
+                                <h3>Pattern Not Matched.</h3>}
+
                             <h6> Attempts remaining: {attempts}</h6>
                             <div className="inputContainer">
                                 <p className="norse input">
@@ -141,7 +150,11 @@ const Game = (props) => {
                         </div>
                 : <Lose />
                     } </div>
-            } </div>
+            }
+
+            </div>
+
+
     )
 }
 

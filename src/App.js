@@ -17,19 +17,24 @@ function App() {
     });
 
     const selectMode = (mode) => {
-        setData({...data, [mode]: true});
+        let toFalse;
+        if (mode === "easyMode") {
+            toFalse = "hardMode"
+        } else {
+            toFalse = "easyMode"
+        }
+        setData({...data, [mode]: true, [toFalse]: false});
     }
 
 
   return (
-    <GameContext.Provider value={{data}}>
+    <GameContext.Provider value={{data, selectMode}}>
         <Router>
             <div className="App">
             {console.log(data)}
             <Route exact path="/" component={LandingPage} />
 
-            <Route exact path ='/game'
-                render={(props) => <Game {...props}  />} />
+            <Route exact path ='/game' component={Game} />
 
             <Route exact path="/highscores" component={Highscores} />
             </div>
