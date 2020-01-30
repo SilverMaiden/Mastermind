@@ -149,10 +149,22 @@
   flex-flow: column nowrap;
   align-items: center;
   width: 240px;
-  height: 45vh;
+  height: 42vh;
   margin-top: 14%;
   margin-left: 3%;
   border: solid white 2px;
   border-radius: 20px;
   overflow: scroll;
+}
+.win-component {
+  display: flex;
+  flex-flow: column wrap;
+  align-items: center;
+}
+.win-component img {
+  max-width: 300px;
+  max-height: 100px;
+}
+.win-component p {
+  width: 20vw;
 }

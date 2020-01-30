@@ -14,9 +14,12 @@ const Win = () => {
     let prizeLocation =  prizeStringify.substr(2, prizeStringify.length - 4);
 
     return (
-        <div>
-            <h1> This is the Winning page.</h1>
+        <div className="win-component">
+            <h1> You have won the challenge.</h1>
+            <p> The Gods and Goddesses above have witnessed your skill, and reward you with: </p>
+            <h5> {prizes[prizeNames[randomNum]].title}</h5>
             <img src={prizeLocation} alt="img" />
+            <h6>{prizes[prizeNames[randomNum]].tagline}</h6>
             {console.log(prizeLocation)}
         </div>
     )

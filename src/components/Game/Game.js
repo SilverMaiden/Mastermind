@@ -24,7 +24,7 @@ const Game = (props) => {
         timerRunOut: false,
         letters: ["a", "b", "c", "d", "e", "f","g", "h"],
         values: [0, 0, 0, 0],
-        pass: false,
+        pass: true,
         attempts: 10,
         start: "",
         history: [],
