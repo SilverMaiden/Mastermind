@@ -40,11 +40,29 @@
   display: flex;
   flex-flow: column wrap;
   align-items: center;
-  width: 100vw;
+  width: 100%;
 }
 .game-page .container-2 {
   display: flex;
   flex-flow: row nowrap;
+  width: 100%;
+}
+.game-page .subContainer {
+  margin-top: 10%;
+  margin-left: 5%;
+  width: 250px;
+  display: flex;
+  flex-flow: column wrap;
+  align-items: center;
+  height: 50vh;
+}
+.game-page .subContainer button {
+  color: white;
+  background: none;
+  border: none;
+}
+.game-page .subContainer button:hover {
+  color: grey;
 }
 .game-page .container-3 {
   display: flex;
@@ -94,28 +112,39 @@
   font-size: 1.5rem;
   flex-flow: column nowrap;
   align-items: center;
-  width: 250px;
+  width: 18vw;
   height: 50vh;
   margin-top: 20%;
-  margin-right: 5%;
+  margin-left: -22% !important;
   border: solid white 2px;
+  margin-left: 50%;
   border-radius: 20px;
   overflow: scroll;
 }
+.history-component #sidebar-tabs-container a {
+  display: block;
+}
+.history-component .guess {
+  font-size: 16px;
+  margin: 0;
+}
 .history-component .historyContainer {
+  min-height: 160px;
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
   border-bottom: solid white 2px;
-  width: 100%;
-  margin: -5%;
+  margin-bottom: 5%;
 }
-.history-component h6 {
+.history-component .historyContainer h6 {
   font-size: 1rem;
-  width: 50%;
+  width: 5vw;
+  margin: 0 !important;
+  padding: 0;
 }
-.history-component p {
+.history-component .historyContainer .hint {
   font-size: 0.75rem;
+  width: 15vw;
 }
 .history-component .norse {
   font-size: 2rem;
@@ -127,8 +156,8 @@
   align-items: center;
   width: 250px;
   height: 50vh;
-  margin-top: 20%;
-  margin-left: 5%;
+  margin-top: 13%;
+  margin-left: 4%;
   border: solid white 2px;
   border-radius: 20px;
   overflow: scroll;

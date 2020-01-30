@@ -140,6 +140,18 @@ const Game = (props) => {
             setGameState({...gameState, pass: true});
         }
     }
+        const scroll = () => {
+            let component = document.getElementsByClassName("history-component");
+            console.log(component);
+        }
+
+        const scrollIcon = () => {
+            if (history.length > 1) {
+                return <FontAwesomeIcon
+                                    icon="angle-double-down"
+                                    size="3x"/>
+            }
+        }
         const setOffTimer = () => {
             if ( data.hardMode) {
                 return <Countdown date={gameState.start + 10000} onComplete={handleTimer} />
@@ -154,7 +166,9 @@ const Game = (props) => {
             } else {
                 return (
                     <div className="container-2">
-                            <AttemptHistory history={history} />
+                            <div className="subContainer">
+                                <AttemptHistory history={history} />
+                            </div>
                          <div className="container-3">
                             <div className="container-4">
                                 {console.log(randomNums)}
@@ -212,10 +226,9 @@ const Game = (props) => {
             {loading ? <h1> Loading...</h1> :
                 <div className="container-1">
                     {setUpGamePage()}
-
                 </div>
             }
-    </div>
+        </div>
     )
 }
 

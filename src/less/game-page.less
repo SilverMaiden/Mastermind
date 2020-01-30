@@ -16,12 +16,32 @@
         display: flex;
         flex-flow: column wrap;
         align-items: center;
-        width: 100vw;
+        width: 100%;
     }
 
     .container-2 {
         display: flex;
         flex-flow: row nowrap;
+        width: 100%;
+
+    }
+    .subContainer {
+        margin-top: 10%;
+        margin-left: 5%;
+        width: 250px;
+        display: flex;
+        flex-flow: column wrap;
+        align-items: center;
+        height: 50vh;
+        
+        button {
+            color: white;
+            background: none;
+            border: none;
+            &:hover {
+                color: grey;
+            }
+        }
 
     }
     .container-3 {
