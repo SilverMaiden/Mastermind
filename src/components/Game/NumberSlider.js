@@ -9,8 +9,8 @@ const NumberSlider = (props) => {
         <div className="inputDiv">
                 <button className="btn" onClick={() => props.handleClickUp(props.index)}>
                 <FontAwesomeIcon
-                    icon="chevron-circle-up"
-                    size="lg"
+                    icon="chevron-up"
+                    size="2x"
                 /></button>
 
              <p className="norse input">
@@ -18,8 +18,8 @@ const NumberSlider = (props) => {
             </p>
                 <button className="btn down" onClick={() => props.handleClickDown(props.index)}>
                 <FontAwesomeIcon
-                    icon="chevron-circle-down"
-                    size="lg"
+                    icon="chevron-down"
+                    size="2x"
                 /></button>
             </div>
 

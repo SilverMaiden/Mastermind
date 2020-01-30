@@ -32,6 +32,8 @@
   color: white;
   margin-bottom: 25%;
   margin-top: 25%;
+  outline-color: white !important;
+  outline-width: thin;
 }
 .game-page .btn:hover {
   color: grey;
@@ -55,14 +57,6 @@
   flex-flow: column wrap;
   align-items: center;
   height: 50vh;
-}
-.game-page .subContainer button {
-  color: white;
-  background: none;
-  border: none;
-}
-.game-page .subContainer button:hover {
-  color: grey;
 }
 .game-page .container-3 {
   display: flex;
@@ -154,10 +148,10 @@
   font-size: 1.5rem;
   flex-flow: column nowrap;
   align-items: center;
-  width: 250px;
-  height: 50vh;
-  margin-top: 13%;
-  margin-left: 4%;
+  width: 240px;
+  height: 45vh;
+  margin-top: 14%;
+  margin-left: 3%;
   border: solid white 2px;
   border-radius: 20px;
   overflow: scroll;

@@ -8,8 +8,8 @@ body {
 }
 
 @font-face {
-  font-family: 'floki-Hard';
-  src: local('floki-Hard');
+  font-family: 'floki';
+  src: url('./fonts/floki-Hard.ttf') format('truetype');
 }
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
