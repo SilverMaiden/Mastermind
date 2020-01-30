@@ -3,7 +3,9 @@ import axios from 'axios';
 import {GameContext} from "../../contexts/GameContext";
 import NumberSlider from "./NumberSlider";
 import Countdown from 'react-countdown';
-import Attempts from "./Attempts";
+
+//My components
+import Instructions from "../Instructions.js";
 import AttemptHistory from "./AttemptHistory";
 import Lose from "../Lose";
 import Win from "../Win";
@@ -138,69 +140,82 @@ const Game = (props) => {
             setGameState({...gameState, pass: true});
         }
     }
-
-    return (
-        <div className="game-page">
-        <div className="myBox" >
-        {loading ? <h1> Loading...</h1> :
-            <div className="position">
-            {pass ? <Win /> :
-                <div>
-                    {attempts !== 0  && gameState.timerRunOut !== true ?
-                        <div className="container">
-                            {console.log(randomNums)}
-                            {data.hardMode ?
-                                <Countdown date={gameState.start + 10000} onComplete={handleTimer} />
-                            : <p> </p>}
-                            {attempts === 10 ?
-                                <h3> Enter the correct combination</h3> :
-                                <h3>Pattern Not Matched.</h3>}
-
-                            <p> Attempts remaining: {attempts}</p>
-                            <div className="inputContainer">
-                                <NumberSlider
-                                    letters={letters}
-                                    values={values}
-                                    index={0}
-                                    handleClickUp={handleClickUp
-                                    } handleClickDown={handleClickDown}
-                                />
-                                <NumberSlider
-                                    letters={letters}
-                                    values={values}
-                                    index={1}
-                                    handleClickUp={handleClickUp}
-                                    handleClickDown={handleClickDown}
-                                />
-                                <NumberSlider
-                                    letters={letters}
-                                    values={values}
-                                    index={2}
-                                    handleClickUp={handleClickUp}
-                                    handleClickDown={handleClickDown}
-                                />
-                                <NumberSlider
-                                    letters={letters}
-                                    values={values}
-                                    index={3}
-                                    handleClickUp={handleClickUp
-                                    } handleClickDown={handleClickDown}
-                                />
-
-                            </div>
-                        <button onClick={handleSubmit}> submit</button>
-                        <AttemptHistory history={history} />
-                        </div>
-                : <Lose />
-                    } </div>
+        const setOffTimer = () => {
+            if ( data.hardMode) {
+                return <Countdown date={gameState.start + 10000} onComplete={handleTimer} />
             }
-            </div>
         }
 
-            </div>
-            </div>
+        const setUpGamePage = () => {
+            if (attempts === 0 || gameState.timerRunOut) {
+                return <Lose />;
+            } else if (pass) {
+                return <Win />;
+            } else {
+                return (
+                    <div className="container-2">
+                            <AttemptHistory history={history} />
+                         <div className="container-3">
+                            <div className="container-4">
+                                {console.log(randomNums)}
+                                {setOffTimer()}
+                                 {attempts === 10 ?
+                                    <h3> Enter the correct combination</h3> :
+                                    <h3>Pattern Not Matched.</h3>}
+
+                                <p> Attempts remaining: {attempts}</p>
+                                <div className="inputContainer">
+                                    <NumberSlider
+                                        letters={letters}
+                                        values={values}
+                                        index={0}
+                                        handleClickUp={handleClickUp
+                                        } handleClickDown={handleClickDown}
+                                    />
+                                    <NumberSlider
+                                        letters={letters}
+                                        values={values}
+                                        index={1}
+                                        handleClickUp={handleClickUp}
+                                        handleClickDown={handleClickDown}
+                                    />
+                                    <NumberSlider
+                                        letters={letters}
+                                        values={values}
+                                        index={2}
+                                        handleClickUp={handleClickUp}
+                                        handleClickDown={handleClickDown}
+                                    />
+                                    <NumberSlider
+                                        letters={letters}
+                                        values={values}
+                                        index={3}
+                                        handleClickUp={handleClickUp
+                                        } handleClickDown={handleClickDown}
+                                    />
+                            </div>
+                            <button onClick={handleSubmit}> submit</button>
+                            </div>
+                        </div>
+                        <Instructions />
+                    </div>
 
 
+                );
+            }
+        }
+
+
+
+    return (
+        <div className="game-page" >
+            {loading ? <h1> Loading...</h1> :
+                <div className="container-1">
+                    {setUpGamePage()}
+
+                </div>
+            }
+    </div>
     )
 }
 

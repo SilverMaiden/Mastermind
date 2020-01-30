@@ -4,14 +4,18 @@
 
 body {
   background: url("./assets/background.png");
-  background-size: cover;
+  background-repeat: no-repeat;
+  backdrop-filter: blur(2.5px) brightness(80%);
+  -webkit-backdrop-filter: blur(2.5px) brightness(80%);
+  background-blend-mode: darken;
+
+height: 100vh;
   color: white;
+  background-size: cover;
+
 }
 
 .myBox {
-    backdrop-filter: blur(8px) brightness(50%);
-    -webkit-backdrop-filter: blur(8px) brightness(50%);
-    background-blend-mode: darken;
     border: solid black 0.125px;
     display: flex;
     border-radius: 10px;
@@ -19,7 +23,6 @@ body {
     align-items: center;
     padding: 2%;
     margin-top: 5%;
-    width: 100%;
     color: white;
     transition: height 3s ease-in;
 	-webkit-box-shadow:0 0 10px rgba(0, 0, 0, 0.5);
@@ -73,8 +76,7 @@ body {
     font-family: floki;
     font: floki;
     color:white;
-    background-color: black;
-    font-size: 5rem;
+    background-color: transparent;
 }
 
 

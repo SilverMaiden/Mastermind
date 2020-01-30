@@ -6,9 +6,13 @@ import LandingPage from "./components/LandingPage";
 import Game from "./components/Game/Game";
 import Highscores from "./components/Highscores";
 import {Route, Link, BrowserRouter as Router} from 'react-router-dom';
+
+//Context
 import {GameContext} from "./contexts/GameContext";
 
-//Reducers
+//Fontawsome import for icons
+import { faHome } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 function App() {
     const [data, setData] = useState({

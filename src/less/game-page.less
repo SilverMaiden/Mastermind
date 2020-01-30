@@ -1,20 +1,55 @@
 .game-page {
-    display: flex;
-    flex-flow: column wrap;
-    align-items: center;
-    width: 100%;
-    .container {
+    width: 100vw;
+
+    .btn{
+        border: none;
+        background: none;
+        color: white;
+        margin-bottom: 25%;
+        margin-top: 25%;
+        &:hover {
+            color: grey;
+        }
+    }
+
+    .container-1 {
         display: flex;
         flex-flow: column wrap;
         align-items: center;
-        width: 100%;
-        padding-left: 50px;
-        padding-right: 50px;
-        border: solid 2px white;
-        border-radius: 20px;
-        margin-top: 7%;
+        width: 100vw;
     }
 
+    .container-2 {
+        display: flex;
+        flex-flow: row nowrap;
+
+    }
+    .container-3 {
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: center;
+        width: 40vw;
+        height: 70vh;
+        padding-left: 50px;
+        padding-right: 50px;
+        border-radius: 20px;
+        margin-top: 10%;
+        border: solid 2px white;
+    }
+
+
+    .container-4 {
+        display: flex;
+        flex-flow: column wrap;
+        align-items: center;
+    }
+
+    .inputDiv {
+        display: flex;
+        flex-flow: column wrap;
+        align-items: center;
+        width: 10vw;
+    }
     .inputContainer {
         display: flex;
         flex-flow: row nowrap;
@@ -26,11 +61,14 @@
     .input {
         font-size: 3rem;
         display: flex;
+        background:rgba(0,0,0,0.75);
         flex-flow: column wrap;
         align-items: center;
-        padding: 5%;
+        padding: 10% !important;
+        padding-top: 30% !important;
+        padding-bottom: 30% !important;
         margin: 2%;
-        width: 100%;
+        width: 50%;
         border: solid 2px white;
         border-radius: 20px;
 
