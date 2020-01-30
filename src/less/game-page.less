@@ -1,5 +1,6 @@
 .game-page {
     width: 100vw;
+    padding-bottom: 5%;
 
     .btn{
         border: none;
@@ -44,10 +45,11 @@
         align-items: center;
         width: 40vw;
         height: 70vh;
-        padding-left: 50px;
-        padding-right: 50px;
+        padding-left: 5vw;
+        padding-right: 5vw;
+        padding-bottom: 5vh;
         border-radius: 20px;
-        margin-top: 10%;
+        margin-top: 15vh;
         border: solid 2px white;
     }
 
@@ -74,6 +76,8 @@
 
     .input {
         font-size: 3rem;
+        @media @phone-down {font-size: 1.5rem};
+
         display: flex;
         background:rgba(0,0,0,0.75);
         flex-flow: column wrap;

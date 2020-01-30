@@ -3,7 +3,7 @@ import React, {useContext} from "react";
 const AttemptHistory = (props) => {
     return (
         <div className="history-component">
-            <h5> Attempts History </h5>
+            <p className="header"> Attempts History </p>
             {props.history.length > 0 ?
                 props.history.map(element => (
                     <div className="historyContainer">

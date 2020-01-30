@@ -6,6 +6,7 @@ import Countdown from 'react-countdown';
 
 //My components
 import Instructions from "../Instructions.js";
+import Timer from "../Timer.js";
 import AttemptHistory from "./AttemptHistory";
 import Lose from "../Lose";
 import Win from "../Win";
@@ -24,7 +25,7 @@ const Game = (props) => {
         timerRunOut: false,
         letters: ["a", "b", "c", "d", "e", "f","g", "h"],
         values: [0, 0, 0, 0],
-        pass: true,
+        pass: false,
         attempts: 10,
         start: "",
         history: [],
@@ -117,7 +118,7 @@ const Game = (props) => {
             if (nums >= pos && pos > 0) {
                 return `One or more of your runes are in the chosen four, and ${pos}` + (pos>1 ? ` are` : ` is`) + ` in the right position.`
             } else if (nums === 0) {
-                return `None of your runes are in the chosen four, and none in the right position.`
+                return `None of your runes are in the chosen four, and none are in the right position.`
             } else if (nums > 0 && pos === 0) {
                 return `One or more of your runes are in the chosen four, but none are in the right position.`
             }
@@ -152,9 +153,12 @@ const Game = (props) => {
                                     size="3x"/>
             }
         }
-        const setOffTimer = () => {
-            if ( data.hardMode) {
-                return <Countdown date={gameState.start + 10000} onComplete={handleTimer} />
+
+        const rightComponent = () => {
+            if (data.hardMode) {
+                return <Timer startTime={gameState.start} handleTimer={handleTimer} />
+            } else {
+                return <Instructions/>
             }
         }
 
@@ -172,7 +176,6 @@ const Game = (props) => {
                          <div className="container-3">
                             <div className="container-4">
                                 {console.log(randomNums)}
-                                {setOffTimer()}
                                  {attempts === 10 ?
                                     <h3> Enter the correct combination</h3> :
                                     <h3>Pattern Not Matched.</h3>}
@@ -208,10 +211,10 @@ const Game = (props) => {
                                         } handleClickDown={handleClickDown}
                                     />
                             </div>
-                            <button onClick={handleSubmit}> submit</button>
+                            <button className="mainButtons" onClick={handleSubmit}> submit</button>
                             </div>
                         </div>
-                        <Instructions />
+                        {rightComponent()}
                     </div>
 
 
@@ -223,7 +226,7 @@ const Game = (props) => {
 
     return (
         <div className="game-page" >
-            {loading ? <h1> Loading...</h1> :
+            {loading ? <img src={"eclipse155px.svg"} alt="loading spinner" /> :
                 <div className="container-1">
                     {setUpGamePage()}
                 </div>

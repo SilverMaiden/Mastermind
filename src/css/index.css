@@ -25,6 +25,7 @@
 }
 .game-page {
   width: 100vw;
+  padding-bottom: 5%;
 }
 .game-page .btn {
   border: none;
@@ -64,10 +65,11 @@
   align-items: center;
   width: 40vw;
   height: 70vh;
-  padding-left: 50px;
-  padding-right: 50px;
+  padding-left: 5vw;
+  padding-right: 5vw;
+  padding-bottom: 5vh;
   border-radius: 20px;
-  margin-top: 10%;
+  margin-top: 15vh;
   border: solid 2px white;
 }
 .game-page .container-4 {
@@ -101,6 +103,11 @@
   border: solid 2px white;
   border-radius: 20px;
 }
+@media (max-width: 700px) {
+  .game-page .input {
+    font-size: 1.5rem;
+  }
+}
 .history-component {
   display: flex;
   font-size: 1.5rem;
@@ -115,15 +122,20 @@
   border-radius: 20px;
   overflow: scroll;
 }
-.history-component #sidebar-tabs-container a {
-  display: block;
+.history-component .header {
+  font-size: 1.25rem;
 }
 .history-component .guess {
-  font-size: 16px;
+  font-size: 3rem;
   margin: 0;
 }
+@media (max-width: 700px) {
+  .history-component .guess {
+    font-size: 2.5rem;
+  }
+}
 .history-component .historyContainer {
-  min-height: 160px;
+  min-height: 28vh;
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
@@ -137,8 +149,13 @@
   padding: 0;
 }
 .history-component .historyContainer .hint {
-  font-size: 0.75rem;
+  font-size: 0.95rem;
   width: 15vw;
+}
+@media (max-width: 700px) {
+  .history-component .historyContainer .hint {
+    font-size: 0.75rem;
+  }
 }
 .history-component .norse {
   font-size: 2rem;
