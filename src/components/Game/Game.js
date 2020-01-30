@@ -8,6 +8,13 @@ import AttemptHistory from "./AttemptHistory";
 import Lose from "../Lose";
 import Win from "../Win";
 
+//Fontawsome import for icons
+import { faHome } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
+
+// import fontawesome library
+import '../../fontawesome.js';
 const Game = (props) => {
     const {data} = useContext(GameContext);
     const [gameState, setGameState] = useState({
@@ -76,6 +83,7 @@ const Game = (props) => {
         let correctNums = 0;
         let numsArr = [];
         let updatedAttempts = attempts - 1;
+
         const positionCheck = (index) => {
                 if (values[index] === randomNums[index]) {
                         correctPos += 1;
@@ -83,7 +91,7 @@ const Game = (props) => {
                     }
                 }
         values.map(element => {
-            if (randomNums.includes(element) && !numsArr.includes(element)) {
+            if (randomNums.includes(element)) {
                 correctNums += 1;
                 //console.log("been hit")
                 numsArr.push(element);
@@ -94,6 +102,9 @@ const Game = (props) => {
         positionCheck(1);
         positionCheck(2);
         positionCheck(3);
+        if (correctPos > correctNums) {
+            correctNums = correctPos;
+        }
         console.log(numsArr);
         console.log(`numbers in correct position: ${correctPos}`);
         console.log(`numbers in submission that are in the correct number: ${correctNums}`);
@@ -101,14 +112,14 @@ const Game = (props) => {
         console.log(`attempts remaining: ${attempts}`);
 
         const createHint = (nums, pos) => {
-            if (nums > pos && nums > 0) {
-                return `One or more of your numbers is in the chosen four, but none are in the right position.`
+            if (nums >= pos && pos > 0) {
+                return `One or more of your runes are in the chosen four, and ${pos}` + (pos>1 ? ` are` : ` is`) + ` in the right position.`
             } else if (nums === 0) {
-                return `None of your numners are in the chosen four, and none in the right position.`
-            } else {
-                return `One or more of your numbers is in the chosen four, and ${pos} are in the right position.`
-
+                return `None of your runes are in the chosen four, and none in the right position.`
+            } else if (nums > 0 && pos === 0) {
+                return `One or more of your runes are in the chosen four, but none are in the right position.`
             }
+
 
         }
         let update = [letters[values[0]] + letters[values[1]] + letters[values[2]] + letters[values[3]], createHint(correctNums, correctPos)];
@@ -137,7 +148,6 @@ const Game = (props) => {
                 <div>
                     {attempts !== 0  && gameState.timerRunOut !== true ?
                         <div className="container">
-                            <h1> This is the Game page</h1>
                             {console.log(randomNums)}
                             {data.hardMode ?
                                 <Countdown date={gameState.start + 10000} onComplete={handleTimer} />
@@ -146,31 +156,37 @@ const Game = (props) => {
                                 <h3> Enter the correct combination</h3> :
                                 <h3>Pattern Not Matched.</h3>}
 
-                            <h6> Attempts remaining: {attempts}</h6>
+                            <p> Attempts remaining: {attempts}</p>
                             <div className="inputContainer">
-                                <p className="norse input">
-                                    <button onClick={() => handleClickUp(0)}>^</button>
-                                    {letters[values[0]]}
-                                    <button onClick={() => handleClickDown(0)}>v</button>
-                                </p>
+                                <NumberSlider
+                                    letters={letters}
+                                    values={values}
+                                    index={0}
+                                    handleClickUp={handleClickUp
+                                    } handleClickDown={handleClickDown}
+                                />
+                                <NumberSlider
+                                    letters={letters}
+                                    values={values}
+                                    index={1}
+                                    handleClickUp={handleClickUp}
+                                    handleClickDown={handleClickDown}
+                                />
+                                <NumberSlider
+                                    letters={letters}
+                                    values={values}
+                                    index={2}
+                                    handleClickUp={handleClickUp}
+                                    handleClickDown={handleClickDown}
+                                />
+                                <NumberSlider
+                                    letters={letters}
+                                    values={values}
+                                    index={3}
+                                    handleClickUp={handleClickUp
+                                    } handleClickDown={handleClickDown}
+                                />
 
-                                <p className="norse input">
-                                    <button onClick={() => handleClickUp(1)}>^</button>
-                                    {letters[values[1]]}
-                                    <button onClick={() => handleClickDown(1)}>v</button>
-                                </p>
-
-                                <p className="norse input">
-                                    <button onClick={() => handleClickUp(2)}>^</button>
-                                    {letters[values[2]]}
-                                    <button onClick={() => handleClickDown(2)}>v</button>
-                                </p>
-
-                                <p className="norse input">
-                                    <button onClick={() => handleClickUp(3)}>^</button>
-                                    {letters[values[3]]}
-                                    <button onClick={() => handleClickDown(3)}>v</button>
-                                </p>
                             </div>
                         <button onClick={handleSubmit}> submit</button>
                         <AttemptHistory history={history} />
