@@ -12,12 +12,12 @@ const LandingPage = () => {
 
     return (
         <div className="landingPage">
-            <div className="container myBox">
-               <h1> Welcome to Mastermind </h1>
-               <h4> Choose your difficulty:</h4>
+            <div className="container">
+               <h1 className="header"> Mastermind </h1>
+               <h4> Choose your difficulty</h4>
                <div className="modeButtons">
-                   <Link to="/game"><button className="button" onClick={() => handleClick("easyMode")}> Easy </button></Link>
-                   <Link to="/game"><button className="button" onClick={() => handleClick("hardMode")}> Hard </button></Link>
+                   <Link to="/game"><button className=" mainButtons" onClick={() => handleClick("easyMode")}> Easy </button></Link>
+                   <Link to="/game"><button className="mainButtons" onClick={() => handleClick("hardMode")}> Hard </button></Link>
             </div>
            </div>
         </div>

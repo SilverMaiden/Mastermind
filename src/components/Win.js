@@ -18,7 +18,9 @@ const Win = () => {
             <h1> You have won the challenge.</h1>
             <p> The Gods and Goddesses above have witnessed your skill, and reward you with: </p>
             <h5> {prizes[prizeNames[randomNum]].title}</h5>
-            <img src={prizeLocation} alt="img" />
+            <div className="circle">
+                <img src={prizeLocation} alt="img" />
+            </div>
             <h6>{prizes[prizeNames[randomNum]].tagline}</h6>
             {console.log(prizeLocation)}
         </div>

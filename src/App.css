@@ -4,6 +4,7 @@
 
 body {
   background: url("./assets/background.png");
+  width: 100%;
   font-family: 'Gill Sans';
   font-weight: 500;
   background-repeat: no-repeat;
@@ -70,10 +71,12 @@ body {
     font-size: 0.75rem;
     border-radius: 5px;
     border: none;
-    padding: 2vh;
-    padding-left:4vh;
-    padding-right: 4vh;
+    padding-top: 1vh;
+    padding-bottom:1vh;
+    padding-left:3vh;
+    padding-right: 3vh;
     position: inherit;
+    transition: 0.3s;
 }
 
 .mainButtons:hover {

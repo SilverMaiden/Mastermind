@@ -1,17 +1,20 @@
+@import "mixins";
 .history-component {
 
-    display: flex;
     font-size: 1.5rem;
-    flex-flow: column nowrap;
-    align-items: center;
+    .flex-setup(column, nowrap) ;
     width: 18vw;
-    height: 50vh;
-    margin-top: 20%;
-    margin-left: -22% !important;
+    height: 60vh ;
+    margin-top: 20vh;
+    margin-left: -16% !important;
+    margin-right: 16%;
     border: solid white 2px;
-    margin-left: 50%;
     border-radius: 20px;
     overflow: scroll;
+    @media @phone-down {
+        height: 30vh;
+
+};
     .header {
         font-size: 1.25rem;
     }

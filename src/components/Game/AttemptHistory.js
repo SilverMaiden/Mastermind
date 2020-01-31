@@ -2,6 +2,7 @@ import React, {useContext} from "react";
 
 const AttemptHistory = (props) => {
     return (
+        <div>
         <div className="history-component">
             <p className="header"> Attempts History </p>
             {props.history.length > 0 ?
@@ -19,6 +20,7 @@ const AttemptHistory = (props) => {
                     )
                 ) : <p />}
 
+        </div>
         </div>
     )
 }

@@ -170,9 +170,7 @@ const Game = (props) => {
             } else {
                 return (
                     <div className="container-2">
-                            <div className="subContainer">
-                                <AttemptHistory history={history} />
-                            </div>
+                        <AttemptHistory history={history} />
                          <div className="container-3">
                             <div className="container-4">
                                 {console.log(randomNums)}
@@ -180,7 +178,7 @@ const Game = (props) => {
                                     <h3> Enter the correct combination</h3> :
                                     <h3>Pattern Not Matched.</h3>}
 
-                                <p> Attempts remaining: {attempts}</p>
+                                <p className="emphasize"> Attempts remaining: {attempts}</p>
                                 <div className="inputContainer">
                                     <NumberSlider
                                         letters={letters}
@@ -211,7 +209,7 @@ const Game = (props) => {
                                         } handleClickDown={handleClickDown}
                                     />
                             </div>
-                            <button className="mainButtons" onClick={handleSubmit}> submit</button>
+                            <button className="mainButtons" onClick={handleSubmit}>submit</button>
                             </div>
                         </div>
                         {rightComponent()}
@@ -226,7 +224,7 @@ const Game = (props) => {
 
     return (
         <div className="game-page" >
-            {loading ? <img src={"eclipse155px.svg"} alt="loading spinner" /> :
+            {loading ? <img className="loading" src={"eclipse155px.svg"} alt="loading spinner" /> :
                 <div className="container-1">
                     {setUpGamePage()}
                 </div>

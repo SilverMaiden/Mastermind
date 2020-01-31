@@ -6,7 +6,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 const Instructions = () => {
 
     return (
-        <div className="instructions-component">
+        <div className="extra">
+            <div className="instructions-component">
+            <h3> This is the Instructions component!</h3>
+            </div>
         </div>
     )
 }
