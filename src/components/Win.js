@@ -15,7 +15,7 @@ const Win = () => {
 
     return (
         <div className="win-component">
-            <h1> You have won the challenge.</h1>
+            <h1 className="header"> You Have Won</h1>
             <p> The Gods and Goddesses above have witnessed your skill, and reward you with: </p>
             <h5> {prizes[prizeNames[randomNum]].title}</h5>
             <div className="circle">

@@ -2,12 +2,12 @@
 .game-page {
     width: 100%;
     height: 100vh;
-    padding-bottom: 5vh;
-    .flex-setup(column, wrap) ;
 
+    //Loading icon
     .loading {
         margin-top: 38vh;
     }
+    //Chevron buttons
     .btn{
         border: none;
         background: none;
@@ -20,37 +20,33 @@
             color: lightgrey;
         }
     }
+    //For the extra div around each component, to straighten things out
     .extra {
         display: flex;
         flex-flow: column wrap;
         align-items: center;
-        margin-left: 3vw;
+        margin-left: 2.75vw;
     }
 
     .container-1 {
         display: flex;
-        flex-flow: column wrap;
+        flex-flow: column nowrap;
         align-items: center;
-        width: 100%;
-        margin-left: 6vw;
     }
 
     .container-2 {
         display: flex;
         flex-flow: row nowrap;
-        width: 100%;
-
-    }
-    .subContainer {
-        border: solid pink 2px;
-         
+        margin-left: 3.5vw;
 
     }
     .container-3 {
         display: flex;
+        font-size: 2vh;
         flex-flow: row nowrap;
         align-items: center;
         width: 40vw;
+        border: solid pink 2px;
         height: 70vh;
         padding-left: 5vw;
         padding-right: 5vw;
@@ -58,8 +54,9 @@
         border-radius: 20px;
         margin-top: 15vh;
         border: solid 2px white;
-        @media @phone-down {height: 40vh};
+        @media @phone-down {height: 50vh};
 
+        //Lining for Attempts Component
         .emphasize {
             border-bottom: solid 0.5px white;
         }
@@ -72,12 +69,15 @@
         align-items: center;
     }
 
+    // For the div surrounding each of the rune inputs
     .inputDiv {
         display: flex;
         flex-flow: column wrap;
         align-items: center;
         width: 10vw;
     }
+
+    //The element containing all the inputs
     .inputContainer {
         display: flex;
         flex-flow: row nowrap;
@@ -86,10 +86,9 @@
 
     }
 
+    //Styling for the rune inputs
     .input {
         font-size: 3rem;
-        @media @phone-down {font-size: 1.5rem};
-
         display: flex;
         background:rgba(0,0,0,0.75);
         flex-flow: column wrap;
@@ -102,6 +101,13 @@
         width: 5vw;
         border: solid 2px white;
         border-radius: 20px;
+
+
+        @media @phone-down {
+            padding-top: 2.25vh ;
+            padding-bottom: 2.25vh;
+            font-size: 1.5rem;
+        };
 
     }
 
