@@ -130,6 +130,7 @@
   }
 }
 .history-component {
+  background: rgba(0, 0, 0, 0.75);
   font-size: 1.5rem;
   display: flex;
   flex-flow: column nowrap;
@@ -188,6 +189,7 @@
 }
 .instructions-component {
   display: flex;
+  background: rgba(0, 0, 0, 0.75);
   font-size: 1rem;
   flex-flow: column nowrap;
   align-items: center;
@@ -197,6 +199,9 @@
   border: solid white 2px;
   border-radius: 20px;
   overflow: scroll;
+}
+.instructions-component p {
+  width: 15vw;
 }
 @media (max-width: 700px) {
   .instructions-component {
@@ -212,6 +217,7 @@ img {
 }
 .timer-component {
   font-size: 1.5rem;
+  background: rgba(0, 0, 0, 0.75);
 }
 .timer-component .content {
   margin-top: 7vh;

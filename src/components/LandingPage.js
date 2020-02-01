@@ -2,7 +2,6 @@ import React, {useContext} from "react";
 import {Link} from "react-router-dom";
 import {GameContext} from "../contexts/GameContext";
 import Game from "./Game/Game";
-import SnowStorm from 'react-snowstorm';
 
 const LandingPage = () => {
     const {selectMode} = useContext(GameContext);
@@ -13,7 +12,6 @@ const LandingPage = () => {
 
     return (
         <div className="landingPage">
-        <SnowStorm />
             <div className="container">
                <h1 className="header"> Mastermind </h1>
                <h4> Choose your difficulty</h4>

@@ -8,7 +8,20 @@ const Instructions = () => {
     return (
         <div className="extra">
             <div className="instructions-component">
-            <h3> This is the Instructions component!</h3>
+            <h3> Instructions: </h3>
+            <p>
+                The Gods will randomly select a pattern of four different runes
+                from a total of eight different runes.
+                <br />
+            </p>
+            <p>
+                You have 10 attempts to guess the correct rune combination.
+                <br />
+            </p>
+            <p>
+                At the end of each guess, the Gods will give you a hint as to how close you are.
+                <br />
+            </p>
             </div>
         </div>
     )

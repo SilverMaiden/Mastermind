@@ -1,5 +1,6 @@
 .instructions-component {
     display: flex;
+    background:rgba(0,0,0,0.75);
     font-size: 1.0rem;
     flex-flow: column nowrap;
     align-items: center;
@@ -9,6 +10,10 @@
     border: solid white 2px;
     border-radius: 20px;
     overflow: scroll;
+
+    p {
+        width: 15vw;
+    }
 
     @media @phone-down {
     height: 30vh;

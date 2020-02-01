@@ -6,6 +6,7 @@ import LandingPage from "./components/LandingPage";
 import Game from "./components/Game/Game";
 import Highscores from "./components/Highscores";
 import {Route, Link, BrowserRouter as Router} from 'react-router-dom';
+import SnowStorm from 'react-snowstorm';
 
 //Context
 import {GameContext} from "./contexts/GameContext";
@@ -36,6 +37,7 @@ function App() {
     <GameContext.Provider value={{data, selectMode}}>
         <Router>
             <div className="App">
+            <SnowStorm />
             {console.log(data)}
             <Route exact path="/" component={LandingPage} />
 
