@@ -5,7 +5,7 @@ import './css/index.css';
 import LandingPage from "./components/LandingPage";
 import Game from "./components/Game/Game";
 import Highscores from "./components/Highscores";
-import {Route, Link, BrowserRouter as Router} from 'react-router-dom';
+import {Route, Link, Redirect, BrowserRouter as Router} from 'react-router-dom';
 import SnowStorm from 'react-snowstorm';
 
 //Context
@@ -20,6 +20,7 @@ function App() {
         highscores: {},
         easyMode: false,
         hardMode: false,
+        isGameStarted: false,
     });
 
     const selectMode = (mode) => {
@@ -29,7 +30,7 @@ function App() {
         } else {
             toFalse = "easyMode"
         }
-        setData({...data, [mode]: true, [toFalse]: false});
+        setData({...data, [mode]: true, [toFalse]: false, isGameStarted: true});
     }
 
 
@@ -37,11 +38,12 @@ function App() {
     <GameContext.Provider value={{data, selectMode}}>
         <Router>
             <div className="App">
-            <SnowStorm />
             {console.log(data)}
             <Route exact path="/" component={LandingPage} />
 
-            <Route exact path ='/game' component={Game} />
+            <Route exact path ='/game'>
+                {data.isGameStarted ? <Game /> : <Redirect to="/" />}
+            </Route>
 
             <Route exact path="/highscores" component={Highscores} />
             </div>

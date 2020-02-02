@@ -19,23 +19,38 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 // import fontawesome library
 import '../../fontawesome.js';
 const Game = (props) => {
+
+
+    const mapNumsToLetters = ["a", "b", "c", "d", "e", "f","g", "h"];
+    //Comment: Explain what numOfValues is
+    const lengthOfAnswer = 4;
+    const minValue = 0;
+    const maxValue = 7;
+    const totalAttempts = 10;
+
+
     const {data} = useContext(GameContext);
     const [gameState, setGameState] = useState({
-        randomNums: [],
+        //Explain random nums api
+        correctAnswer: [],
         timerRunOut: false,
-        letters: ["a", "b", "c", "d", "e", "f","g", "h"],
-        values: [0, 0, 0, 0],
+        currentGuess: new Array(lengthOfAnswer).fill(0),
+        // Set to true when user correctly guesses the combination, otherwise false.
         pass: false,
-        attempts: 10,
-        start: "",
+        //change attempts in state to remaining attempts
+        attempts: totalAttempts,
+        //Default value for timer start, change variable name to timerStart
+        start: null,
+        //Describe what history array is, what it's for, what it's structure is (array of strings)
         history: [],
+        //
         loading: true,
     });
 
     //Destructured Values
-    const { letters,
-        values,
-        randomNums,
+    const {
+        currentGuess,
+        correctAnswer,
         pass,
         attempts,
         history,
@@ -43,19 +58,19 @@ const Game = (props) => {
     } = gameState;
 
     //
-    //GET random numbers
+    ////Explain what doing here
+    // Explain what use effect is doing and why you're using it
     useEffect(() => {
-        axios.get("https://www.random.org/integers/?num=4&min=1&max=6&col=1&base=10&format=plain&rnd=new")
+        axios.get(`https://www.random.org/integers/?num=${lengthOfAnswer}&min=${minValue}&max=${maxValue}&col=1&base=10&format=plain&rnd=new`)
             .then(response => {
-                let arrayFormat = response.data.split("").filter(element => (
-                    element in ["0", "1", "2", "3", "4", "5", "6", "7"]
-                ))
-                let intArr = arrayFormat.map(element => (
-                    parseInt(element)
-                ))
-
+                //Describe what doing here
+                let correctAnswer = response.data.split("\n").filter(element => (
+                    element !== ""
+                )).map(element => {
+                    return parseInt(element);
+                })
                 setGameState({...gameState,
-                             randomNums: intArr,
+                             correctAnswer: correctAnswer,
                              loading: false,
                              start: Date.now()
                 })
@@ -65,162 +80,126 @@ const Game = (props) => {
 
     }, [])
 
+
+    //Comment about timer What is timer: When does it get called Why
     const handleTimer = () => {
         setGameState({...gameState, timerRunOut: true});
     }
-
+    //Handle when user clicks an up arrow for one of the master guess currentGuess
     const handleClickUp = (index) => {
-        let newArr = gameState.values // the array of values, which we want to modify at a particular index.
+        let newArr = gameState.currentGuess // the array of currentGuess, which we want to modify at a particular index.
+        //comment why using ternary operator
         newArr[index] = (newArr[index] === 7 ? 0 : newArr[index] + 1);
-        setGameState({...gameState, values: newArr});
+        setGameState({...gameState, currentGuess: newArr});
     }
 
+    //Comments
     const handleClickDown = (index) => {
-            let newArr = gameState.values // the array of values, which we want to modify at a particular index.
-            newArr[index] = (newArr[index] === 0 ? 7 : newArr[index] - 1);
-            setGameState({...gameState, values: newArr});
+        let newArr = gameState.currentGuess // the array of currentGuess, which we want to modify at a particular index.
+        newArr[index] = (newArr[index] === 0 ? 7 : newArr[index] - 1); // comment explaining ternary operator;
+        setGameState({...gameState, currentGuess: newArr});
     }
-
-    const handleSubmit = () => {
-        let correctPos = 0;
-        let correctNums = 0;
-        let numsArr = [];
-        let updatedAttempts = attempts - 1;
-
-        const positionCheck = (index) => {
-                if (values[index] === randomNums[index]) {
-                        correctPos += 1;
-                        console.log(correctPos);
-                    }
-                }
-        values.map(element => {
-            if (randomNums.includes(element)) {
-                correctNums += 1;
-                //console.log("been hit")
-                numsArr.push(element);
-            }
-        })
-
-        positionCheck(0);
-        positionCheck(1);
-        positionCheck(2);
-        positionCheck(3);
-        if (correctPos > correctNums) {
-            correctNums = correctPos;
+    //Comment what this is doing
+    const createHint = (hasCorrectValue, numValsInCorrectPos) => {
+        if (numValsInCorrectPos > 0) {
+            return `One or more of your runes are in the chosen four, and ${numValsInCorrectPos}` + (numValsInCorrectPos > 1 ? ` are` : ` is`) + ` in the right position.`
+        } else if (hasCorrectValue) {
+            return `One or more of your runes are in the chosen four, but none are in the right position.`
+        } else {
+            return `None of your runes are in the chosen four, and none are in the right position.`
         }
-        console.log(numsArr);
-        console.log(`numbers in correct position: ${correctPos}`);
-        console.log(`numbers in submission that are in the correct number: ${correctNums}`);
-        console.log(`randomNums: ${randomNums[0]}, ${randomNums[1]}, ${randomNums[2]}, ${randomNums[3]}`);
+    }
+    //Comments explaining when gets triggered, what it does
+    const handleSubmit = () => {
+        let numValsInCorrectPos = 0; // Comment
+        let hasCorrectValue = false; //Comment
+
+        //Comment what this is doing
+        for (var i = 0; i < lengthOfAnswer; i++) {
+            let element = currentGuess[i];
+            if (element === correctAnswer[i]) {
+                numValsInCorrectPos += 1;
+                console.log(numValsInCorrectPos);
+            }
+            if (correctAnswer.includes(element)) {
+                hasCorrectValue = true;
+                //comment explaining what this is doing
+                //console.log("been hit")
+            }
+        }
+
+        //Leaving console.log of the correct answer to make it easier to showcase winning functionality
+        console.log(`numbers in correct position: ${numValsInCorrectPos}`);
+        console.log(`numbers in submission that are in the correct answer: ${hasCorrectValue}`);
+        console.log(`correctAnswer: ${correctAnswer[0]}, ${correctAnswer[1]}, ${correctAnswer[2]}, ${correctAnswer[3]}`);
         console.log(`attempts remaining: ${attempts}`);
 
-        const createHint = (nums, pos) => {
-            if (nums >= pos && pos > 0) {
-                return `One or more of your runes are in the chosen four, and ${pos}` + (pos>1 ? ` are` : ` is`) + ` in the right position.`
-            } else if (nums === 0) {
-                return `None of your runes are in the chosen four, and none are in the right position.`
-            } else if (nums > 0 && pos === 0) {
-                return `One or more of your runes are in the chosen four, but none are in the right position.`
-            }
-
-
+        let hintEntry = createHint(hasCorrectValue, numValsInCorrectPos);
+        let guessEntry = "";
+        for (var i = 0; i < lengthOfAnswer; i++) {
+            guessEntry += mapNumsToLetters[currentGuess[i]];
         }
-        let update = [letters[values[0]] + letters[values[1]] + letters[values[2]] + letters[values[3]], createHint(correctNums, correctPos)];
-        let updatedHistory = history; // unshifting history would try to modify the original string
-        updatedHistory.unshift(update);
 
+        let updatedHistory = history; // unshifting history would try to modify the original string
+        updatedHistory.unshift([guessEntry, hintEntry]);
 
         //Set game state
         setGameState({...gameState,
                      attempts: (gameState.attempts - 1),
                      history: updatedHistory});
 
-
         //Time to check for success!
-        if (correctPos === 4) {
+        if (numValsInCorrectPos === lengthOfAnswer) {
             setGameState({...gameState, pass: true});
         }
     }
-        const scroll = () => {
-            let component = document.getElementsByClassName("history-component");
-            console.log(component);
+
+    //Comment
+    const componentOnRight = () => {
+        if (data.hardMode) {
+            return <Timer startTime={gameState.start} handleTimer={handleTimer} />
+        } else {
+            return <Instructions/>
         }
+    }
 
-        const scrollIcon = () => {
-            if (history.length > 1) {
-                return <FontAwesomeIcon
-                                    icon="angle-double-down"
-                                    size="3x"/>
-            }
-        }
-
-        const rightComponent = () => {
-            if (data.hardMode) {
-                return <Timer startTime={gameState.start} handleTimer={handleTimer} />
-            } else {
-                return <Instructions/>
-            }
-        }
-
-        const setUpGamePage = () => {
-            if (attempts === 0 || gameState.timerRunOut) {
-                return <Lose />;
-            } else if (pass) {
-                return <Win />;
-            } else {
-                return (
-                    <div className="container-2">
-                        <AttemptHistory history={history} />
-                         <div className="container-3">
-                            <div className="container-4">
-                                {console.log(randomNums)}
-                                 {attempts === 10 ?
-                                    <h3> Enter the correct combination</h3> :
-                                    <h3>Pattern Not Matched.</h3>}
-
+    //Description of what it's doing, one or two lines
+    const setUpGamePage = () => {
+        if (attempts === 0 || gameState.timerRunOut) {
+            return <Lose />;
+        } else if (pass) {
+            return <Win />;
+        } else {
+            return (
+                <div className="container-2">
+                    <AttemptHistory history={history} />
+                     <div className="container-3">
+                        <div className="container-4">
+                             {attempts === 10 ?
+                                <h3> Enter the correct combination</h3> :
+                                <h3>Pattern Not Matched.</h3>}
                                 <p className="emphasize"> Attempts remaining: {attempts}</p>
                                 <div className="inputContainer">
-                                    <NumberSlider
-                                        letters={letters}
-                                        values={values}
-                                        index={0}
-                                        handleClickUp={handleClickUp
-                                        } handleClickDown={handleClickDown}
-                                    />
-                                    <NumberSlider
-                                        letters={letters}
-                                        values={values}
-                                        index={1}
-                                        handleClickUp={handleClickUp}
-                                        handleClickDown={handleClickDown}
-                                    />
-                                    <NumberSlider
-                                        letters={letters}
-                                        values={values}
-                                        index={2}
-                                        handleClickUp={handleClickUp}
-                                        handleClickDown={handleClickDown}
-                                    />
-                                    <NumberSlider
-                                        letters={letters}
-                                        values={values}
-                                        index={3}
-                                        handleClickUp={handleClickUp
-                                        } handleClickDown={handleClickDown}
-                                    />
-                            </div>
-                            <button className="mainButtons" onClick={handleSubmit}>submit</button>
-                            </div>
+                                {
+                                    currentGuess.map((element, index) => (
+                                        <NumberSlider
+                                            mapNumsToLetters={mapNumsToLetters}
+                                            currentGuess={currentGuess}
+                                            index={index}
+                                            handleClickUp={handleClickUp}
+                                            handleClickDown={handleClickDown}
+                                        />
+                                    ))
+                                }
+                                </div>
+                        <button className="mainButtons" onClick={handleSubmit}>submit</button>
                         </div>
-                        {rightComponent()}
                     </div>
-
-
-                );
-            }
+                    {componentOnRight()}
+                </div>
+            );
         }
-
-
+    }
 
     return (
         <div className="game-page" >

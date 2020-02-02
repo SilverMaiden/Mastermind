@@ -14,7 +14,7 @@ const NumberSlider = (props) => {
                 /></button>
 
              <p className="norse input">
-                {props.letters[props.values[props.index]]}
+                {props.mapNumsToLetters[props.currentGuess[props.index]]}
             </p>
                 <button className="btn down" onClick={() => props.handleClickDown(props.index)}>
                 <FontAwesomeIcon
