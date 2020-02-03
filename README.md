@@ -18,24 +18,21 @@ On losing, the user is shown a simple losing page with a “message from the Nor
 
 
 ## Creative Extensions Implemented
-1. Use can choose from both an easy and a hard mode.
+* Use can choose from both an easy and a hard mode.
 
-2. Hard mode incorporates a one minute timer.
+* Hard mode incorporates a one minute timer.
+    * To make the hard mode more difficult, I incorporated a one minute timer that would end the game when it ran out. To add to the sense of urgency, I used an online tool called loading.io to create an animated SVG of an hourglass which spins every few seconds.
 
-To make the hard mode more difficult, I incorporated a one minute timer that would end the game when it ran out. To add to the sense of urgency, I used an online tool called loading.io to create an animated SVG of an hourglass which spins every few seconds.
+* Numbers are displayed as Norse runes.
 
-3. Numbers are displayed as Norse runes.
+* Responsive design.
+    * I utilized the responsive units available in Javascript (VW, VH) in order to make the application resize appropriately when viewed on different screen sizes.
 
-4. Responsive design.
+* Cross-browser support
+    * After developing the project on Chrome, I discovered when testing on Safari that Safari wasn’t rendering the page styles as expected. After determine that this was due to how Safari renders CSS for nested divs vs Chrome, I went back and simplified the html and css as much as possible to provide a compatible experience for both browsers.
 
-I utilized the responsive units available in Javascript (VW, VH) in order to make the application resize appropriately when viewed on different screen sizes.
-
-5. Cross-browser support
-After developing the project on Chrome, I discovered when testing on Safari that Safari wasn’t rendering the page styles as expected. After determine that this was due to how Safari renders CSS for nested divs vs Chrome, I went back and simplified the html and css as much as possible to provide a compatible experience for both browsers.
-
-6. Dynamic winning page
-
-As mentioned above, I wanted to provide a fun ending to the game, so I created several prizes with taglines that a user could win (such as a cute cat, or a mini dragon). One of these is randomly selected and presented to the user when they win. I used the built in Javascript method to generate random numbers to avoid the loading delay seen when using the random numbers api (required for this project to generate the ‘correct’ answer). ## Available Scripts
+* Dynamic winning pages:
+    * As mentioned above, I wanted to provide a fun ending to the game, so I created several prizes with taglines that a user could win (such as a cute cat, or a mini dragon). One of these is randomly selected and presented to the user when they win. I used the built in Javascript method to generate random numbers to avoid the loading delay seen when using the random numbers api (required for this project to generate the ‘correct’ answer). ## Available Scripts
 
 ## Running the Application
 
