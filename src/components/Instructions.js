@@ -1,8 +1,6 @@
 import React from "react";
 
-import { faHome } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
+// This component renders the instructions on the right side of the page when in easy mode.
 const Instructions = () => {
 
     return (

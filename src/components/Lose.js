@@ -1,6 +1,7 @@
 import React from "react";
 import {Link} from "react-router-dom";
 
+// This component renders the Losing page, from where the user can choose to start a new game.
 const Lose = () => {
 
     return (

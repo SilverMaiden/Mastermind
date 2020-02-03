@@ -1,5 +1,6 @@
-import React, {useContext} from "react";
+import React from "react";
 
+// This component renders the users attempt history.
 const AttemptHistory = (props) => {
     return (
         <div>

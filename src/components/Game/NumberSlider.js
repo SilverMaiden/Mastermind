@@ -1,9 +1,8 @@
 import React from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
+// This component renders each of the slots from which a user can guess a number/rune.
 const NumberSlider = (props) => {
-
-
 
     return (
         <div className="inputDiv">

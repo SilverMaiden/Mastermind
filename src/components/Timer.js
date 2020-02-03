@@ -1,6 +1,7 @@
 import React from "react";
 import Countdown from 'react-countdown';
 
+// This component renders the timer in hard mode.
 const Timer = (props) => {
     return (
         <div className="extra">

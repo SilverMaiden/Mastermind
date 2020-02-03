@@ -1,6 +1,7 @@
 import React from "react";
 import { prizes } from "../prizes";
 
+// This component renders the winning page, selecting a random prize image and tagline to display to the user.
 const Win = () => {
     let prizeNames = ["pusheen", "bananapeel", "dragon", "gauntlet"];
     function getRandomInt(min, max) {

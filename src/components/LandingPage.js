@@ -1,8 +1,9 @@
 import React, {useContext} from "react";
 import {Link} from "react-router-dom";
 import {GameContext} from "../contexts/GameContext";
-import Game from "./Game/Game";
 
+// The main page of the game, where the user selects the difficulty of the game before starting.
+// All refreshes redirect to here.
 const LandingPage = () => {
     const {selectMode} = useContext(GameContext);
 
