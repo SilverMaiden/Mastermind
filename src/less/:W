@@ -1,0 +1,22 @@
+.history-component {
+    display: flex;
+    font-size: 1.5rem;
+    flex-flow: column nowrap;
+    align-items: center;
+    width: 500px;
+    height: 300px;
+    overflow: scroll;
+    border: solid pink 2px;
+    .historyContainer {
+        display: flex;
+        flex-flow: column wrap;
+        align-items: center;
+        border: solid pink 2px;
+        width: 50%;
+    }
+    h6 {
+        font-size: 1rem;
+        width: 50%;
+    }
+
+}

@@ -1,0 +1,9 @@
+.landingPage .container {
+  display: flex;
+  flex-flow: column wrap;
+  align-items: center;
+}
+.landingPage .button {
+  padding: 5%;
+  color: pink;
+}

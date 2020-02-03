@@ -7,6 +7,20 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+@font-face {
+  font-family: 'floki';
+  src: url('./fonts/floki-Hard.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Norse';
+  src: url('./fonts/Norsebold.otf') format('opentype');
+}
+@font-face {
+  font-family: 'NorseLight';
+  src: url('./fonts/Norse.otf') format('opentype');
+}
+
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;

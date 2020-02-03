@@ -1,0 +1,114 @@
+@import "mixins";
+.game-page {
+    width: 100%;
+    height: 100vh;
+
+    //Loading icon
+    .loading {
+        margin-top: 38vh;
+    }
+    //Chevron buttons
+    .btn{
+        border: none;
+        background: none;
+        color: white;
+        margin-bottom: 2vh;
+        margin-top: 2vh;
+        outline-color: white !important;
+        outline-width: thin;
+        &:hover {
+            color: lightgrey;
+        }
+    }
+    //For the extra div around each component, to straighten things out
+    .extra {
+        display: flex;
+        flex-flow: column wrap;
+        align-items: center;
+        margin-left: 2.75vw;
+    }
+
+    .container-1 {
+        display: flex;
+        flex-flow: column nowrap;
+        align-items: center;
+    }
+
+    .container-2 {
+        display: flex;
+        flex-flow: row nowrap;
+        margin-left: 3.5vw;
+
+    }
+    .container-3 {
+        display: flex;
+        font-size: 2vh;
+        flex-flow: row nowrap;
+        align-items: center;
+        width: 40vw;
+        border: solid pink 2px;
+        height: 70vh;
+        padding-left: 5vw;
+        padding-right: 5vw;
+        padding-bottom: 5vh;
+        border-radius: 20px;
+        margin-top: 15vh;
+        border: solid 2px white;
+        @media @phone-down {height: 50vh};
+
+        //Lining for Attempts Component
+        .emphasize {
+            border-bottom: solid 0.5px white;
+        }
+    }
+
+
+    .container-4 {
+        display: flex;
+        flex-flow: column wrap;
+        align-items: center;
+    }
+
+    // For the div surrounding each of the rune inputs
+    .inputDiv {
+        display: flex;
+        flex-flow: column wrap;
+        align-items: center;
+        width: 10vw;
+    }
+
+    //The element containing all the inputs
+    .inputContainer {
+        display: flex;
+        flex-flow: row nowrap;
+        width: 100%;
+        justify-content: space-around;
+
+    }
+
+    //Styling for the rune inputs
+    .input {
+        font-size: 3rem;
+        display: flex;
+        background:rgba(0,0,0,0.75);
+        flex-flow: column wrap;
+        align-items: center;
+        padding-left: 1vw;
+        padding-right: 1vw;
+        padding-top: 5.25vh ;
+        padding-bottom: 5.25vh;
+        margin: 2%;
+        width: 5vw;
+        border: solid 2px white;
+        border-radius: 20px;
+
+
+        @media @phone-down {
+            padding-top: 2.25vh ;
+            padding-bottom: 2.25vh;
+            font-size: 1.5rem;
+        };
+
+    }
+
+}
