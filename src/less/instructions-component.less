@@ -1,9 +1,7 @@
 .instructions-component {
-    display: flex;
+    .flex-setup(column, nowrap);
     background:rgba(0,0,0,0.75);
     font-size: 1.0rem;
-    flex-flow: column nowrap;
-    align-items: center;
     width: 18vw;
     margin-top: 20vh;
     height: 60vh;
@@ -15,10 +13,12 @@
         width: 15vw;
     }
 
+
     @media @phone-down {
     height: 30vh;
     h3 {
         font-size: 1rem;
+        font-weight: 100 !important;
     }
 };
 

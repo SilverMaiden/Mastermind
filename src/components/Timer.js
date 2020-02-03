@@ -6,7 +6,7 @@ const Timer = (props) => {
     return (
         <div className="extra">
             <div className="instructions-component timer-component">
-                <h5> Time remaining:</h5>
+                <p> Time remaining:</p>
                 <div className="content">
                 <img src={'hourglass55px.svg'} alt = "hourglass" />
                 <Countdown

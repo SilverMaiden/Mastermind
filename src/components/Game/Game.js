@@ -239,8 +239,8 @@ const Game = (props) => {
                      <div className="container-3">
                         <div className="container-4">
                              {remainingAttempts === totalAttempts ?
-                                <h3> Enter the correct combination</h3> :
-                                <h3>Pattern Not Matched.</h3>}
+                                <h1> Enter the correct combination</h1> :
+                                <h1>Pattern Not Matched.</h1>}
                                 <p className="emphasize"> Attempts remaining: {remainingAttempts}</p>
                                 <div className="inputContainer">
                                 {
