@@ -232,7 +232,10 @@ const Game = (props) => {
         } else {
             return (
                 <div className="container-2">
-                    <AttemptHistory history={history} />
+                    <AttemptHistory
+                        history={history}
+                        historyKey={totalAttempts - remainingAttempts}
+                        />
                      <div className="container-3">
                         <div className="container-4">
                              {remainingAttempts === totalAttempts ?
@@ -243,6 +246,7 @@ const Game = (props) => {
                                 {
                                     currentGuess.map((element, index) => (
                                         <NumberSlider
+                                            key={index}
                                             mapNumsToLetters={mapNumsToLetters}
                                             currentGuess={currentGuess}
                                             index={index}
