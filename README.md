@@ -2,6 +2,8 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## Project Structure and Design
 
+Whimsical: https://whimsical.com/6qpnosZyuq167AfFZ1HwvV
+
 For this project, I created a web application, using React, to create an interactive Mastermind experience. The application has four pages: a landing page, a game page, a win page, and a lose page. 
 
 When a user launches the application, they are brought to the landing page, where they make their initial selection of either easy or hard mode. I designed the landing page with the intention of creating a certain amount of intrigue that the user would carry with them into the game. To create this sense of mystery, I kept the page very simple (only a title and the easy/hard mode options) and used a greyscale, blurred background. I also chose to incorporate Nordic elements — including using Nordic fonts, a forested background, an animated snow storm component for the landing page and, later, Nordic runes (instead of numbers) for the mastermind combination — to add to this enigmatic atmosphere that I felt was fitting for a game of Mastermind. 
