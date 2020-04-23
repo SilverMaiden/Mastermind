@@ -1,6 +1,5 @@
 import React, {useState, useEffect, useContext} from "react";
-import axios from 'axios';
-import {GameContext} from "../../contexts/GameContext";
+import { useSelector, useDispatch } from 'react-redux';
 import NumberSlider from "./NumberSlider";
 
 //My components
@@ -9,6 +8,9 @@ import Timer from "../Timer.js";
 import AttemptHistory from "./AttemptHistory";
 import Lose from "../Lose";
 import Win from "../Win";
+
+//Importing actions
+import { setUpGame } from '../../actions/actions';
 
 // Importing functions to handle the game
 import {
@@ -28,6 +30,7 @@ import {
 // import fontawesome library
 import '../../fontawesome.js';
 const Game = (props) => {
+    const dispatch = useDispatch();
 
     /*
      * The Game component handles all of the logic of Mastermind.
@@ -61,7 +64,6 @@ const Game = (props) => {
      *
      * This state is provided to all components through the App.js component.
      */
-    const {data} = useContext(GameContext);
 
     /*
      * The setup of the Game component's local state.
@@ -88,27 +90,20 @@ const Game = (props) => {
      * isLoading - Set to true whenever the component is waiting on an API call to return and changed to false
      * once a value is received. Used to show user a loading screen while waiting for game state to be initialized.
      */
-    const [gameState, setGameState] = useState({
-        correctAnswer: [],
-        timerRunOut: false,
-        currentGuess: new Array(lengthOfAnswer).fill(0),
-        hasWon: false,
-        remainingAttempts: totalAttempts,
-        timerStartTime: null,
-        history: [],
-        isLoading: true,
-    });
+    const correctAnswer = useSelector(state => state.gameReducer.correctAnswer);
+    const timerRunOut = useSelector(state => state.gameReducer.timerRunOut);
+    const currentGuess= useSelector(state => state.gameReducer.currentGuess);
+    const hasWon = useSelector(state => state.gameReducer.hasWon);
+    const remainingAttempts = useSelector(state => state.gameReducer.remainingAttempts);
+    const timerStartTime = useSelector(state => state.gameReducer.timerStartTime);
+    const history = useSelector(state => state.gameReducer.history);
+    const isLoading = useSelector(state => state.gameReducer.isLoading);
+    const hardMode = useSelector(state => state.gameReducer.hardMode);
+    const easyMode = useSelector(state => state.gameReducer.easyMode);
 
     // Destructuring state to allow us to reference its values directly.
     // Example: We can now reference the state "isLoading" as isLoading, instead of gameState.isLoading
-    const {
-        currentGuess,
-        correctAnswer,
-        hasWon,
-        remainingAttempts,
-        history,
-        isLoading
-    } = gameState;
+
 
     /*
      * useEffect() - Built in React hook for functional components to use life-cycle methods.
@@ -116,30 +111,14 @@ const Game = (props) => {
      * 'correct' answer.
      */
     useEffect(() => {
-        axios.get(`https://www.random.org/integers/?num=${lengthOfAnswer}&min=${minRuneValue}&max=${maxRuneValue}&col=1&base=10&format=plain&rnd=new`)
-            .then(response => {
-                // Converting the response from a newline-separated string to an array of integers.
-                let correctAnswer = response.data.split("\n").filter(element => (
-                    element !== "" // remove empty element due to trailing newline character in response
-                )).map(element => {
-                    return parseInt(element);
-                })
-                setGameState({...gameState,
-                             correctAnswer: correctAnswer,
-                             isLoading: false,
-                             timerStartTime: Date.now()
-                })
-            }).catch(error => {
-                console.log(error.message);
-            })
-
+        dispatch(setUpGame(lengthOfAnswer, minRuneValue, maxRuneValue));
     }, []);
 
 
     // Sets the component on the right side of the screen to a timer or instructions depending on which mode the user selects.
     const componentOnRight = () => {
-        if (data.hardMode) {
-            return <Timer startTime={gameState.timerStartTime} handleTimer={handleTimer} gameState={gameState} setGameState={setGameState} />
+        if (hardMode) {
+            return <Timer startTime={timerStartTime} handleTimer={handleTimer} />
         } else {
             return <Instructions/>
         }
@@ -147,7 +126,7 @@ const Game = (props) => {
 
     // Displays attempt history on left, game in the middle, and instructions/a timer on the right
     const setUpGamePage = () => {
-        if (remainingAttempts === 0 || gameState.timerRunOut) {
+        if (remainingAttempts === 0 || timerRunOut) {
             return <Lose />;
         } else if (hasWon) {
             return <Win />;
@@ -174,8 +153,6 @@ const Game = (props) => {
                                             index={index}
                                             handleClickUp={handleClickUp}
                                             handleClickDown={handleClickDown}
-                                            gameState={gameState}
-                                            setGameState={setGameState}
                                         />
                                     ))
                                 }
