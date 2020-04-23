@@ -10,6 +10,21 @@ import AttemptHistory from "./AttemptHistory";
 import Lose from "../Lose";
 import Win from "../Win";
 
+// Importing functions to handle the game
+import {
+    mapNumsToLetters,
+    lengthOfAnswer,
+    minRuneValue,
+    maxRuneValue,
+    totalAttempts,
+    converter,
+    handleTimer,
+    handleClickUp,
+    handleClickDown,
+    createHint,
+    handleSubmit
+} from './GameHandleFunctions'
+
 // import fontawesome library
 import '../../fontawesome.js';
 const Game = (props) => {
@@ -32,15 +47,6 @@ const Game = (props) => {
      *
      * totalAttempts - The number of chances the user has to guess the correct answer.
      */
-
-    const mapNumsToLetters = ["a", "b", "c", "d", "e", "f","g", "h"];
-    const lengthOfAnswer = 4;
-    const minRuneValue = 0;
-    const maxRuneValue = 7;
-    const totalAttempts = 10;
-
-    //Used to convert integers to their English representations.
-    var converter = require('number-to-words');
 
 
     /*
@@ -130,94 +136,10 @@ const Game = (props) => {
     }, []);
 
 
-    // Called by the Countdown component when the hard mode timer runs out. Sets timerRunOut to true.
-    const handleTimer = () => {
-        setGameState({...gameState, timerRunOut: true});
-    }
-
-    // Called when the user clicks one of the up arrows to change a rune on screen.
-    // Takes the position of that rune in the guess as input.
-    const handleClickUp = (index) => {
-        let newArr = gameState.currentGuess;
-        // Sets the corresponding currentGuess value back down to the minRuneValue when the currentValue is the maxRuneValue,
-        // allowing the user to cycle through the minRuneValue-maxRuneValue range.
-        newArr[index] = (newArr[index] === maxRuneValue ? minRuneValue : newArr[index] + 1);
-        setGameState({...gameState, currentGuess: newArr});
-    }
-
-    // Called when the user clicks one of the down arrows to change a rune on screen.
-    // Takes the position of that rune in the guess as input.
-    const handleClickDown = (index) => {
-        let newArr = gameState.currentGuess
-        // Sets the corresponding currentGuess value back up to the maxRunValue when the currentValue is the minRuneValue,
-        // allowing the user to cycle through the minRuneValue-maxRuneValue range.
-        newArr[index] = (newArr[index] === minRuneValue ? maxRuneValue : newArr[index] - 1); // comment explaining ternary operator;
-        setGameState({...gameState, currentGuess: newArr});
-    }
-
-    // Creates a hint based on the user's guess.
-    const createHint = (hasCorrectValue, numValsInCorrectPos) => {
-        if (numValsInCorrectPos > 0) {
-            return `One or more of your runes are in the chosen four, and ${converter.toWords(numValsInCorrectPos)}` + (numValsInCorrectPos > 1 ? ` are` : ` is`) + ` in the right position.`
-        } else if (hasCorrectValue) {
-            return `One or more of your runes are in the chosen four, but none are in the right position.`
-        } else {
-            return `None of your runes are in the chosen four, and none are in the right position.`
-        }
-    }
-
-    // Called when user hits submit button to enter a guess.
-    const handleSubmit = () => {
-
-        // The number of values in the correct position. Initialized to 0.
-        let numValsInCorrectPos = 0;
-        // Whether the currentGuess contains one or more of the runes in the answer. Initialized to false. .
-        let hasCorrectValue = false;
-
-        // Calculates how many runes in the user's guess are in the right position and if any appear in the correct answer.
-        for (let i = 0; i < lengthOfAnswer; i++) {
-            let element = currentGuess[i];
-            if (element === correctAnswer[i]) {
-                numValsInCorrectPos += 1;
-            }
-
-            if (correctAnswer.includes(element)) {
-                hasCorrectValue = true;
-            }
-        }
-
-        // Time to check for success!
-        if (numValsInCorrectPos === lengthOfAnswer) {
-            setGameState({...gameState, hasWon: true});
-
-        } else {
-            // Guess was incorrect: have to update history and give hint
-
-            let hintEntry = createHint(hasCorrectValue, numValsInCorrectPos);
-            let guessEntry = "";
-
-            // Converting the user's guess from integers to their 'rune' counterparts.
-            for (let i = 0; i < lengthOfAnswer; i++) {
-                guessEntry += mapNumsToLetters[currentGuess[i]];
-            }
-
-            let updatedHistory = history;
-            updatedHistory.unshift([guessEntry, hintEntry]);
-
-            // Update game state based on user's guess
-            setGameState({...gameState,
-                         remainingAttempts: (gameState.remainingAttempts - 1),
-                         history: updatedHistory
-            });
-            // Leaving console.log of the correct answer to make it easier to showcase winning functionality
-            console.log(`correctAnswer: ${correctAnswer[0]}, ${correctAnswer[1]}, ${correctAnswer[2]}, ${correctAnswer[3]}`);
-        }
-    }
-
     // Sets the component on the right side of the screen to a timer or instructions depending on which mode the user selects.
     const componentOnRight = () => {
         if (data.hardMode) {
-            return <Timer startTime={gameState.timerStartTime} handleTimer={handleTimer} />
+            return <Timer startTime={gameState.timerStartTime} handleTimer={handleTimer} gameState={gameState} setGameState={setGameState} />
         } else {
             return <Instructions/>
         }
@@ -252,6 +174,8 @@ const Game = (props) => {
                                             index={index}
                                             handleClickUp={handleClickUp}
                                             handleClickDown={handleClickDown}
+                                            gameState={gameState}
+                                            setGameState={setGameState}
                                         />
                                     ))
                                 }

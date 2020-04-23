@@ -3,6 +3,13 @@ import Countdown from 'react-countdown';
 
 // This component renders the timer in hard mode.
 const Timer = (props) => {
+
+    const {
+        handleTimer,
+        gameState,
+        setGameState,
+    } = props;
+
     return (
         <div className="extra">
             <div className="instructions-component timer-component">
@@ -10,11 +17,11 @@ const Timer = (props) => {
                 <div className="content">
                 <img src={'hourglass55px.svg'} alt = "hourglass" />
                 <Countdown
-                date={props.startTime + 60000}
+                date={props.startTime + 6000}
                 intervalDelay={0}
                 precision={0}
                 renderer={props => <div>{props.seconds}</div>}
-                onComplete={props.handleTimer}
+                onComplete={setGameState(handleTimer(gameState))}
                 />
                 </div>
             </div>
