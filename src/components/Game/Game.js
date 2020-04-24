@@ -10,7 +10,9 @@ import Lose from "../Lose";
 import Win from "../Win";
 
 //Importing actions
-import { setUpGame } from '../../actions/actions';
+import { setUpGame, handleTimer } from '../../actions/actions';
+
+
 
 // Importing functions to handle the game
 import {
@@ -20,7 +22,6 @@ import {
     maxRuneValue,
     totalAttempts,
     converter,
-    handleTimer,
     handleClickUp,
     handleClickDown,
     createHint,
@@ -111,14 +112,14 @@ const Game = (props) => {
      * 'correct' answer.
      */
     useEffect(() => {
-        dispatch(setUpGame(lengthOfAnswer, minRuneValue, maxRuneValue));
+        dispatch(setUpGame(lengthOfAnswer, minRuneValue, maxRuneValue))
     }, []);
 
 
     // Sets the component on the right side of the screen to a timer or instructions depending on which mode the user selects.
     const componentOnRight = () => {
         if (hardMode) {
-            return <Timer startTime={timerStartTime} handleTimer={handleTimer} />
+            return <Timer />
         } else {
             return <Instructions/>
         }

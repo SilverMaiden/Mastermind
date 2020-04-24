@@ -1,14 +1,18 @@
-import React, {useContext} from "react";
+import React, {useEffect} from "react";
 import {Link} from "react-router-dom";
 import {GameContext} from "../contexts/GameContext";
 import { useSelector, useDispatch } from 'react-redux';
-import {setMode} from '../actions/actions';
+import {setMode, resetGame} from '../actions/actions';
 import SnowStorm from "react-snowstorm";
 
 // The main page of the game, where the user selects the difficulty of the game before starting.
 // All refreshes redirect to here.
 const LandingPage = () => {
     const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(resetGame())
+    },[])
 
     const handleClick = (mode) => {
         dispatch(setMode(mode));

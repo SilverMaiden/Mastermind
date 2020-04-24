@@ -6,7 +6,12 @@ import {
     SET_MODE_ERROR,
     SET_UP_GAME_START,
     SET_UP_GAME_SUCCESS,
-    SET_UP_GAME_ERROR
+    SET_UP_GAME_ERROR,
+    SPINNER_OFF,
+    RESET_GAME,
+    HANDLE_TIMER_START,
+    HANDLE_TIMER_SUCCESS,
+    HANDLE_TIMER_ERROR
 } from '../actions/actions';
 
 // Importing functions to handle the game
@@ -22,6 +27,8 @@ import {
 const initialState = {
     correctAnswer: [],
     timerRunOut: false,
+    handleTimerStarted: false,
+    handleTimerError: false,
     currentGuess: new Array(lengthOfAnswer).fill(0),
     hasWon: false,
     remainingAttempts: totalAttempts,
@@ -44,13 +51,23 @@ export const gameReducer = (state = initialState, action) => {
 
         case SET_MODE_SUCCESS:
             if (action.payload.mode === 'easy')
-                return ({...state, isGameStarted: true, setModeStarted: false, easyMode: true, hardMode: false})
+                return ({...state,
+                        isGameStarted: true,
+                        setModeStarted: false,
+                        easyMode: true,
+                        hardMode: false})
             else {
-                return ({...state, isGameStarted: true, setModeStarted: false, easyMode: false, hardMode: true })
+                return ({...state,
+                        isGameStarted: true,
+                        setModeStarted: false,
+                        easyMode: false,
+                        hardMode: true })
             }
 
         case SET_MODE_ERROR:
-            return ({...state, sertModeStarted: false, setModeError: action.payload})
+            return ({...state,
+                    sertModeStarted: false,
+                    setModeError: action.payload})
 
         case SET_UP_GAME_START:
             return ({...state, setUpGameStarted: true});
@@ -60,11 +77,38 @@ export const gameReducer = (state = initialState, action) => {
             isLoading,
             timerStartTime
         } = action.payload
-        let newState = ({...state, isLoading: false, setUpGameStarted:false, correctAnswer: correctAnswer, isLoading: isLoading, timerStartTime: timerStartTime})
+        let newState = ({...state,
+                        isLoading: false,
+                        setUpGameStarted:false,
+                        correctAnswer: correctAnswer,
+                        isLoading: isLoading,
+                        timerStartTime: timerStartTime})
             return newState;
         case SET_UP_GAME_ERROR:
-            return ({...state, setUpGameError: true});
+            return ({...state, setUpGameError: action.payload.error});
 
+        case SPINNER_OFF:
+            return ({...state, isLoading: action.payload})
+
+        case RESET_GAME:
+            return ({...initialState})
+
+        case HANDLE_TIMER_START:
+            return ({...state, handleTimerStarted: true});
+
+        case HANDLE_TIMER_SUCCESS:
+            console.log(action.payload)
+
+            return ({...state,
+                    timerStartTime: action.payload.timerStartTime,
+                    timerRunOut: action.payload.timerRunOut,
+                    handleTimerStarted: false})
+        case HANDLE_TIMER_ERROR:
+            return ({...state,
+                    timerStartTime: null,
+                    timerRunOut: false,
+                    handleTimerStarted: false,
+                    handleTimerError: action.payload.error})
         default:
             return state;
     }
