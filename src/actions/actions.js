@@ -10,6 +10,8 @@ export const SET_MODE_ERROR = 'SET_MODE_ERROR';
 
 export const SPINNER_OFF = 'SPINNER_OFF';
 
+export const HANDLE_CLICK = 'HANDLE_CLICK';
+
 export const RESET_GAME = 'RESET_GAME';
 
 export const HANDLE_TIMER_START = 'HANDLE_TIMER_START';
@@ -53,6 +55,20 @@ export const setUpGame = (lengthOfAnswer, minRuneValue, maxRuneValue) => dispatc
     .catch(error => {
         dispatch({type: SET_UP_GAME_ERROR, payload: error});
     })
+}
+
+
+export const handleClick = (direction, currentGuess, index, minRuneValue, maxRuneValue) => dispatch => {
+    let newArr = currentGuess
+    if (direction === 'up') {
+        newArr[index] = (newArr[index] === maxRuneValue ? minRuneValue : newArr[index] + 1);
+        dispatch({type: HANDLE_CLICK, payload: newArr})
+    } else if (direction === 'down') {
+        newArr[index] = (newArr[index] === minRuneValue ? maxRuneValue : newArr[index] - 1); // comment explaining ternary operator;
+        dispatch({type: HANDLE_CLICK, payload: newArr})
+    } else {
+        console.log('error');
+    }
 }
 
 export const endTimer = () => dispatch => {

@@ -93,7 +93,6 @@ const Game = (props) => {
      */
     const correctAnswer = useSelector(state => state.gameReducer.correctAnswer);
     const timerRunOut = useSelector(state => state.gameReducer.timerRunOut);
-    const currentGuess= useSelector(state => state.gameReducer.currentGuess);
     const hasWon = useSelector(state => state.gameReducer.hasWon);
     const remainingAttempts = useSelector(state => state.gameReducer.remainingAttempts);
     const timerStartTime = useSelector(state => state.gameReducer.timerStartTime);
@@ -101,6 +100,8 @@ const Game = (props) => {
     const isLoading = useSelector(state => state.gameReducer.isLoading);
     const hardMode = useSelector(state => state.gameReducer.hardMode);
     const easyMode = useSelector(state => state.gameReducer.easyMode);
+
+    const [currentGuess, setCurrentGuess] = useState([0,0,0,0]);
 
     // Destructuring state to allow us to reference its values directly.
     // Example: We can now reference the state "isLoading" as isLoading, instead of gameState.isLoading
@@ -149,11 +150,9 @@ const Game = (props) => {
                                     currentGuess.map((element, index) => (
                                         <NumberSlider
                                             key={index}
-                                            mapNumsToLetters={mapNumsToLetters}
                                             currentGuess={currentGuess}
+                                            setCurrentGuess={setCurrentGuess}
                                             index={index}
-                                            handleClickUp={handleClickUp}
-                                            handleClickDown={handleClickDown}
                                         />
                                     ))
                                 }

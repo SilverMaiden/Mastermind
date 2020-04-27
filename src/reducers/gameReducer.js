@@ -9,6 +9,7 @@ import {
     SET_UP_GAME_ERROR,
     SPINNER_OFF,
     RESET_GAME,
+    HANDLE_CLICK,
     HANDLE_TIMER_START,
     HANDLE_TIMER_SUCCESS,
     HANDLE_TIMER_ERROR
@@ -26,6 +27,9 @@ import {
 
 const initialState = {
     correctAnswer: [],
+    minRuneValue: minRuneValue,
+    maxRuneValue: maxRuneValue,
+    mapNumsToLetters: mapNumsToLetters,
     timerRunOut: false,
     handleTimerStarted: false,
     handleTimerError: false,
@@ -89,6 +93,9 @@ export const gameReducer = (state = initialState, action) => {
 
         case SPINNER_OFF:
             return ({...state, isLoading: action.payload})
+
+        case HANDLE_CLICK:
+            return {...state, currentGuess: action.payload}
 
         case RESET_GAME:
             return ({...initialState})
