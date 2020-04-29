@@ -5,18 +5,11 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import './fonts/floki-Hard.ttf'
 
-import { compose, applyMiddleware } from "redux";
-import logger from "redux-logger";
-import thunk from "redux-thunk";
 
-import { createStore } from 'redux';
 import { Provider } from 'react-redux';
-import  rootReducer from './reducers';
 
+import { store } from './store';
 
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-
-const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunk, logger)));
 ReactDOM.render(
     <Provider store={store}>
         <App />

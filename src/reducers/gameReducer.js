@@ -9,10 +9,11 @@ import {
     SET_UP_GAME_ERROR,
     SPINNER_OFF,
     RESET_GAME,
-    HANDLE_CLICK,
     HANDLE_TIMER_START,
     HANDLE_TIMER_SUCCESS,
-    HANDLE_TIMER_ERROR
+    HANDLE_TIMER_ERROR,
+    CHECK_ANSWER_SUCCESS_CORRECT,
+    CHECK_ANSWER_SUCCESS_INCORRECT,
 } from '../actions/actions';
 
 // Importing functions to handle the game
@@ -33,7 +34,6 @@ const initialState = {
     timerRunOut: false,
     handleTimerStarted: false,
     handleTimerError: false,
-    currentGuess: new Array(lengthOfAnswer).fill(0),
     hasWon: false,
     remainingAttempts: totalAttempts,
     timerStartTime: null,
@@ -94,9 +94,6 @@ export const gameReducer = (state = initialState, action) => {
         case SPINNER_OFF:
             return ({...state, isLoading: action.payload})
 
-        case HANDLE_CLICK:
-            return {...state, currentGuess: action.payload}
-
         case RESET_GAME:
             return ({...initialState})
 
@@ -116,6 +113,16 @@ export const gameReducer = (state = initialState, action) => {
                     timerRunOut: false,
                     handleTimerStarted: false,
                     handleTimerError: action.payload.error})
+
+        case CHECK_ANSWER_SUCCESS_CORRECT:
+            return ({...state, hasWon: true});
+
+        case CHECK_ANSWER_SUCCESS_INCORRECT:
+            let attemptsLeft = state.remainingAttempts - 1;
+            return ({...state,
+                    remainingAttempts: attemptsLeft,
+                    history: action.payload})
+
         default:
             return state;
     }

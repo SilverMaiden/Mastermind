@@ -10,7 +10,7 @@ import Lose from "../Lose";
 import Win from "../Win";
 
 //Importing actions
-import { setUpGame, handleTimer } from '../../actions/actions';
+import { setUpGame, handleTimer, checkAnswer } from '../../actions/actions';
 
 
 
@@ -22,10 +22,6 @@ import {
     maxRuneValue,
     totalAttempts,
     converter,
-    handleClickUp,
-    handleClickDown,
-    createHint,
-    handleSubmit
 } from './GameHandleFunctions'
 
 // import fontawesome library
@@ -34,9 +30,9 @@ const Game = (props) => {
     const dispatch = useDispatch();
 
     /*
-     * The Game component handles all of the logic of Mastermind.
+     * The Game component handles the game views and dispatching actions in this game of mastermind.
      *
-     * Variables:
+     * Variables imported from variables.js:
      *
      * mapNumsToLetters - An array of letters a-h, which correspond to the numbers 0-7.
      * Used to convert the random numbers (from the random number api) to the 'runes'
@@ -54,20 +50,10 @@ const Game = (props) => {
 
 
     /*
-     * Using Context API to get the global state "data", which contains three pieces of state:
      *
-     * easyMode, hardMode - Both set to false by default. One of these values is set to true at
-     * the beginning of the game when a user selects a mode.
+     * This state is provided to all components through Redux.
      *
-     * isGameStarted - Set to false by default. Changes to true when a user selects a mode for
-     * the game. Used to redirect the user back to the main page when they refresh while in a
-     * game (as refreshing resets this value to false).
-     *
-     * This state is provided to all components through the App.js component.
-     */
-
-    /*
-     * The setup of the Game component's local state.
+     * The structure of the initial store:
      *
      * correctAnswer - An array containing "lengthOfAnswer" random numbers. Initialized on component mount.
      *
@@ -90,6 +76,15 @@ const Game = (props) => {
      *
      * isLoading - Set to true whenever the component is waiting on an API call to return and changed to false
      * once a value is received. Used to show user a loading screen while waiting for game state to be initialized.
+     *
+     * easyMode, hardMode - Both set to false by default. One of these values is set to true at
+     * the beginning of the game when a user selects a mode.
+     *
+     * isGameStarted - Set to false by default. Changes to true when a user selects a mode for
+     * the game. Used to redirect the user back to the main page when they refresh while in a
+     * game (as refreshing resets this value to false).
+     *
+
      */
     const correctAnswer = useSelector(state => state.gameReducer.correctAnswer);
     const timerRunOut = useSelector(state => state.gameReducer.timerRunOut);
@@ -101,7 +96,7 @@ const Game = (props) => {
     const hardMode = useSelector(state => state.gameReducer.hardMode);
     const easyMode = useSelector(state => state.gameReducer.easyMode);
 
-    const [currentGuess, setCurrentGuess] = useState([0,0,0,0]);
+    const [currentGuess, setCurrentGuess] = useState(new Array(lengthOfAnswer).fill(0));
 
     // Destructuring state to allow us to reference its values directly.
     // Example: We can now reference the state "isLoading" as isLoading, instead of gameState.isLoading
@@ -115,6 +110,21 @@ const Game = (props) => {
     useEffect(() => {
         dispatch(setUpGame(lengthOfAnswer, minRuneValue, maxRuneValue))
     }, []);
+
+    const onSubmit = () => {
+        dispatch(checkAnswer(history, currentGuess, correctAnswer, lengthOfAnswer, createHint, mapNumsToLetters))
+    }
+    // Creates a hint based on the user's guess.
+    const createHint = (hasCorrectValue, numValsInCorrectPos) => {
+        if (numValsInCorrectPos > 0) {
+            return `One or more of your runes are in the chosen four, and ${converter.toWords(numValsInCorrectPos)}` + (numValsInCorrectPos > 1 ? ` are` : ` is`) + ` in the right position.`
+        } else if (hasCorrectValue) {
+            return `One or more of your runes are in the chosen four, but none are in the right position.`
+        } else {
+            return `None of your runes are in the chosen four, and none are in the right position.`
+        }
+    }
+
 
 
     // Sets the component on the right side of the screen to a timer or instructions depending on which mode the user selects.
@@ -157,7 +167,7 @@ const Game = (props) => {
                                     ))
                                 }
                                 </div>
-                        <button className="mainButtons" onClick={handleSubmit}>submit</button>
+                        <button className="mainButtons" onClick={onSubmit}>submit</button>
                         </div>
                     </div>
                     {componentOnRight()}
@@ -168,7 +178,7 @@ const Game = (props) => {
 
     return (
         <div className="game-page" >
-            {isLoading ? <img className="loading" src={"eclipse155px.svg"} alt="loading spinner" /> :
+            {isLoading ? <img className="loading" data-testid='spinner' src={"eclipse155px.svg"} alt="loading spinner" /> :
                 <div className="container-1">
                     {setUpGamePage()}
                 </div>

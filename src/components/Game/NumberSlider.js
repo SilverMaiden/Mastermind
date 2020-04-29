@@ -3,7 +3,8 @@ import {useDispatch, useSelector} from 'react-redux';
 import {handleClick} from '../../actions/actions';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-// This component renders each of the slots from which a user can guess a number/rune.
+// This component renders each of the slots from which a user can guess a number/rune, and dispatches actions
+// depending on whether the user clicks the up or down arrows.
 const NumberSlider = (props) => {
 
     const dispatch = useDispatch();
@@ -13,7 +14,8 @@ const NumberSlider = (props) => {
     const mapNumsToLetters = useSelector(state => state.gameReducer.mapNumsToLetters);
 
     const [card, setCard] = useState(0);
-
+    // Called when the user clicks one of the up or down arrows to change a rune on screen.
+    // Takes the position of that rune in the guess as input.
     const handleArrowClick = (direction, currentGuess, index, minRuneValue, maxRuneValue) => {
     let newArr = currentGuess
     if (direction === 'up') {
@@ -39,7 +41,7 @@ const NumberSlider = (props) => {
 
     return (
         <div className="inputDiv">
-                <button className="btn" onClick={() => changeSlider('up')}>
+                <button className="btn" data-testid='up' onClick={() => changeSlider('up')}>
                 <FontAwesomeIcon
                     icon="chevron-up"
                     size="2x"
@@ -48,7 +50,7 @@ const NumberSlider = (props) => {
              <p className="norse input">
                 {mapNumsToLetters[card]}
             </p>
-                <button className="btn down" onClick={() => changeSlider('down')}>
+                <button className="btn down" data-testid='down' onClick={() => changeSlider('down')}>
                 <FontAwesomeIcon
                     icon="chevron-down"
                     size="2x"

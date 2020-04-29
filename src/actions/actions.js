@@ -18,6 +18,11 @@ export const HANDLE_TIMER_START = 'HANDLE_TIMER_START';
 export const HANDLE_TIMER_SUCCESS = 'HANDLE_TIMER_SUCCESS';
 export const HANDLE_TIMER_ERROR = 'HANDLE_TIMER_ERROR';
 
+export const CHECK_ANSWER_START = 'CHECK_ANSWER_START';
+export const CHECK_ANSWER_SUCCESS_CORRECT = 'CHECK_ANSWER_SUCCESS_CORRECT';
+export const CHECK_ANSWER_SUCCESS_INCORRECT = 'CHECK_ANSWER_SUCCESS_INCORRECT';
+export const CHECK_ANSWER_ERROR = 'CHECK_ANSWER_ERROR';
+
 
 export const resetGame = () => dispatch => {
     dispatch({type: RESET_GAME});
@@ -57,20 +62,55 @@ export const setUpGame = (lengthOfAnswer, minRuneValue, maxRuneValue) => dispatc
     })
 }
 
+// Called when user hits submit button to enter a guess.
+export const checkAnswer = (history, currentGuess, correctAnswer, lengthOfAnswer, createHint, mapNumsToLetters) => dispatch => {
 
-export const handleClick = (direction, currentGuess, index, minRuneValue, maxRuneValue) => dispatch => {
-    let newArr = currentGuess
-    if (direction === 'up') {
-        newArr[index] = (newArr[index] === maxRuneValue ? minRuneValue : newArr[index] + 1);
-        dispatch({type: HANDLE_CLICK, payload: newArr})
-    } else if (direction === 'down') {
-        newArr[index] = (newArr[index] === minRuneValue ? maxRuneValue : newArr[index] - 1); // comment explaining ternary operator;
-        dispatch({type: HANDLE_CLICK, payload: newArr})
+    // The number of values in the correct position. Initialized to 0.
+    let numValsInCorrectPos = 0;
+    // Whether the currentGuess contains one or more of the runes in the answer. Initialized to false. .
+    let hasCorrectValue = false;
+
+    // Calculates how many runes in the user's guess are in the right position and if any appear in the correct answer.
+    for (let i = 0; i < lengthOfAnswer; i++) {
+        let element = currentGuess[i];
+        if (element === correctAnswer[i]) {
+            numValsInCorrectPos += 1;
+        }
+
+        if (correctAnswer.includes(element)) {
+            hasCorrectValue = true;
+        }
+    }
+
+    // Time to check for success!
+    if (numValsInCorrectPos === lengthOfAnswer) {
+        dispatch({type: CHECK_ANSWER_SUCCESS_CORRECT, payload: {hasWon: true}});
+
     } else {
-        console.log('error');
+        // Guess was incorrect: have to update history and give hint
+
+        let hintEntry = createHint(hasCorrectValue, numValsInCorrectPos);
+        let guessEntry = "";
+
+        // Converting the user's guess from integers to their 'rune' counterparts.
+        for (let i = 0; i < lengthOfAnswer; i++) {
+            guessEntry += mapNumsToLetters[currentGuess[i]];
+        }
+
+        let updatedHistory = history;
+        updatedHistory.unshift([guessEntry, hintEntry]);
+
+        // Update game state based on user's guess
+        let updatedState = {history: updatedHistory};
+        dispatch({type: CHECK_ANSWER_SUCCESS_INCORRECT, payload: updatedHistory })
+        // Leaving console.log of the correct answer to make it easier to showcase winning functionality
+        console.log(`correctAnswer: ${correctAnswer[0]}, ${correctAnswer[1]}, ${correctAnswer[2]}, ${correctAnswer[3]}`);
     }
 }
 
+
+
+// Called by the Countdown component when the hard mode timer runs out. Sets timerRunOut to true.
 export const endTimer = () => dispatch => {
     dispatch({type: HANDLE_TIMER_START});
         dispatch({type: HANDLE_TIMER_SUCCESS, payload: {timerStartTime: null,
