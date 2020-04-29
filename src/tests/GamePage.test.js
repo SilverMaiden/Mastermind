@@ -20,7 +20,7 @@ test('Game page renders rune cards and Attempts History component', async () => 
   const { getAllByText, getByText, getAllByTestId, } = render(
     <Provider store={store}>
       <Router history={history}>
-        <Game />
+        <Game  />
       </Router>
     </Provider>
   );
@@ -37,10 +37,10 @@ test('Game page renders rune cards and Attempts History component', async () => 
 
 test('Game page renders arrow buttons for rune cards changes current guess on click', async () => {
   const history = createMemoryHistory();
-  const { getAllByText, getByText, getAllByTestId, } = render(
+  const { getAllByText, getByText, getAllByTestId, currentGuess } = render(
     <Provider store={store}>
       <Router history={history}>
-        <Game />
+        <Game currentGuess={[0,0,0,0]}/>
       </Router>
     </Provider>
   );
@@ -48,26 +48,14 @@ test('Game page renders arrow buttons for rune cards changes current guess on cl
   let reduxStore;
 
   const upArrows = await waitForElement(() => getAllByTestId('up')) ;
-  expect(upArrows.length === 4)
+  expect(upArrows.length).toEqual(4)
+  fireEvent.click(upArrows[0])
 
-      console.log(currentGuess);
-  setTimeout(() => fireEvent.click(upArrows[0]), 1000);
   setTimeout(() => {
       const updatedCard =  getByText('b')
       expect(updatedCard.length).toEqual(1)
-  }, 3000);
-  setTimeout(() => {
-      console.log(currentGuess);
-      expect(currentGuess[0]).toEqual('ppppppp');
-  }, 9000)
+  }, 1000);
 
-  /*
-  for (var i = 0; i < upArrows.length; i++) {
-    fireEvent.click(upArrows[i]);
-  }*/
-
-  //const updatedCard = await waitForElement(() => getByText('b') )
-  //expect(updatedCard.length).toEqual(1)
 
 });
 
