@@ -1,23 +1,38 @@
-import React, {useState, useEffect, useContext} from "react";
-import axios from 'axios';
-import {GameContext} from "../../contexts/GameContext";
-import NumberSlider from "./NumberSlider";
+import React, {useState, useEffect, useContext} from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import NumberSlider from './NumberSlider';
 
 //My components
-import Instructions from "../Instructions.js";
-import Timer from "../Timer.js";
-import AttemptHistory from "./AttemptHistory";
-import Lose from "../Lose";
-import Win from "../Win";
+import Instructions from '../Instructions.js';
+import Timer from '../Timer.js';
+import AttemptHistory from './AttemptHistory';
+import Lose from '../Lose';
+import Win from '../Win';
+
+//Importing actions
+import { setUpGame, handleTimer, checkAnswer } from '../../actions/actions';
+
+
+
+// Importing variables to handle the game
+import {
+    mapNumsToLetters,
+    lengthOfAnswer,
+    minRuneValue,
+    maxRuneValue,
+    totalAttempts,
+    converter,
+} from './GameVariables'
 
 // import fontawesome library
 import '../../fontawesome.js';
 const Game = (props) => {
+    const dispatch = useDispatch();
 
     /*
-     * The Game component handles all of the logic of Mastermind.
+     * The Game component handles the game views and dispatching actions in this game of mastermind.
      *
-     * Variables:
+     * Variables imported from variables.js:
      *
      * mapNumsToLetters - An array of letters a-h, which correspond to the numbers 0-7.
      * Used to convert the random numbers (from the random number api) to the 'runes'
@@ -33,41 +48,21 @@ const Game = (props) => {
      * totalAttempts - The number of chances the user has to guess the correct answer.
      */
 
-    const mapNumsToLetters = ["a", "b", "c", "d", "e", "f","g", "h"];
-    const lengthOfAnswer = 4;
-    const minRuneValue = 0;
-    const maxRuneValue = 7;
-    const totalAttempts = 10;
-
-    //Used to convert integers to their English representations.
-    var converter = require('number-to-words');
-
 
     /*
-     * Using Context API to get the global state "data", which contains three pieces of state:
      *
-     * easyMode, hardMode - Both set to false by default. One of these values is set to true at
-     * the beginning of the game when a user selects a mode.
+     * This state is provided to all components through Redux.
      *
-     * isGameStarted - Set to false by default. Changes to true when a user selects a mode for
-     * the game. Used to redirect the user back to the main page when they refresh while in a
-     * game (as refreshing resets this value to false).
+     * The structure of the initial store:
      *
-     * This state is provided to all components through the App.js component.
-     */
-    const {data} = useContext(GameContext);
-
-    /*
-     * The setup of the Game component's local state.
-     *
-     * correctAnswer - An array containing "lengthOfAnswer" random numbers. Initialized on component mount.
+     * correctAnswer - An array containing 'lengthOfAnswer' random numbers. Initialized on component mount.
      *
      * timerRunOut - Only used in 'hard mode'. Set to false by default. Changes to true when the timer for
      * the user to guess the correct answer reaches 0.
      *
      * hasWon - Set to false by default. Changes to true when the user guesses the correct combination of 'runes'.
      * (This must happen before the user runs out of attempts and/or before the timer reaches 0)
-     * Controls when the "Win" component is mounted.
+     * Controls when the 'Win' component is mounted.
      *
      * remainingAttempts - initialized to totalAttempts when the game first starts. Decreases by 1 every time the user
      * submits a guess of the combination.
@@ -81,28 +76,31 @@ const Game = (props) => {
      *
      * isLoading - Set to true whenever the component is waiting on an API call to return and changed to false
      * once a value is received. Used to show user a loading screen while waiting for game state to be initialized.
+     *
+     * easyMode, hardMode - Both set to false by default. One of these values is set to true at
+     * the beginning of the game when a user selects a mode.
+     *
+     * isGameStarted - Set to false by default. Changes to true when a user selects a mode for
+     * the game. Used to redirect the user back to the main page when they refresh while in a
+     * game (as refreshing resets this value to false).
+     *
+
      */
-    const [gameState, setGameState] = useState({
-        correctAnswer: [],
-        timerRunOut: false,
-        currentGuess: new Array(lengthOfAnswer).fill(0),
-        hasWon: false,
-        remainingAttempts: totalAttempts,
-        timerStartTime: null,
-        history: [],
-        isLoading: true,
-    });
+    const correctAnswer = useSelector(state => state.gameReducer.correctAnswer);
+    const timerRunOut = useSelector(state => state.gameReducer.timerRunOut);
+    const hasWon = useSelector(state => state.gameReducer.hasWon);
+    const remainingAttempts = useSelector(state => state.gameReducer.remainingAttempts);
+    const timerStartTime = useSelector(state => state.gameReducer.timerStartTime);
+    const history = useSelector(state => state.gameReducer.history);
+    const isLoading = useSelector(state => state.gameReducer.isLoading);
+    const hardMode = useSelector(state => state.gameReducer.hardMode);
+    const easyMode = useSelector(state => state.gameReducer.easyMode);
+
+    const [currentGuess, setCurrentGuess] = useState(new Array(lengthOfAnswer).fill(0));
 
     // Destructuring state to allow us to reference its values directly.
-    // Example: We can now reference the state "isLoading" as isLoading, instead of gameState.isLoading
-    const {
-        currentGuess,
-        correctAnswer,
-        hasWon,
-        remainingAttempts,
-        history,
-        isLoading
-    } = gameState;
+    // Example: We can now reference the state 'isLoading' as isLoading, instead of gameState.isLoading
+
 
     /*
      * useEffect() - Built in React hook for functional components to use life-cycle methods.
@@ -110,51 +108,12 @@ const Game = (props) => {
      * 'correct' answer.
      */
     useEffect(() => {
-        axios.get(`https://www.random.org/integers/?num=${lengthOfAnswer}&min=${minRuneValue}&max=${maxRuneValue}&col=1&base=10&format=plain&rnd=new`)
-            .then(response => {
-                // Converting the response from a newline-separated string to an array of integers.
-                let correctAnswer = response.data.split("\n").filter(element => (
-                    element !== "" // remove empty element due to trailing newline character in response
-                )).map(element => {
-                    return parseInt(element);
-                })
-                setGameState({...gameState,
-                             correctAnswer: correctAnswer,
-                             isLoading: false,
-                             timerStartTime: Date.now()
-                })
-            }).catch(error => {
-                console.log(error.message);
-            })
-
+        dispatch(setUpGame(lengthOfAnswer, minRuneValue, maxRuneValue))
     }, []);
 
-
-    // Called by the Countdown component when the hard mode timer runs out. Sets timerRunOut to true.
-    const handleTimer = () => {
-        setGameState({...gameState, timerRunOut: true});
+    const onSubmit = () => {
+        dispatch(checkAnswer(history, currentGuess, correctAnswer, lengthOfAnswer, createHint, mapNumsToLetters))
     }
-
-    // Called when the user clicks one of the up arrows to change a rune on screen.
-    // Takes the position of that rune in the guess as input.
-    const handleClickUp = (index) => {
-        let newArr = gameState.currentGuess;
-        // Sets the corresponding currentGuess value back down to the minRuneValue when the currentValue is the maxRuneValue,
-        // allowing the user to cycle through the minRuneValue-maxRuneValue range.
-        newArr[index] = (newArr[index] === maxRuneValue ? minRuneValue : newArr[index] + 1);
-        setGameState({...gameState, currentGuess: newArr});
-    }
-
-    // Called when the user clicks one of the down arrows to change a rune on screen.
-    // Takes the position of that rune in the guess as input.
-    const handleClickDown = (index) => {
-        let newArr = gameState.currentGuess
-        // Sets the corresponding currentGuess value back up to the maxRunValue when the currentValue is the minRuneValue,
-        // allowing the user to cycle through the minRuneValue-maxRuneValue range.
-        newArr[index] = (newArr[index] === minRuneValue ? maxRuneValue : newArr[index] - 1); // comment explaining ternary operator;
-        setGameState({...gameState, currentGuess: newArr});
-    }
-
     // Creates a hint based on the user's guess.
     const createHint = (hasCorrectValue, numValsInCorrectPos) => {
         if (numValsInCorrectPos > 0) {
@@ -166,58 +125,12 @@ const Game = (props) => {
         }
     }
 
-    // Called when user hits submit button to enter a guess.
-    const handleSubmit = () => {
 
-        // The number of values in the correct position. Initialized to 0.
-        let numValsInCorrectPos = 0;
-        // Whether the currentGuess contains one or more of the runes in the answer. Initialized to false. .
-        let hasCorrectValue = false;
-
-        // Calculates how many runes in the user's guess are in the right position and if any appear in the correct answer.
-        for (let i = 0; i < lengthOfAnswer; i++) {
-            let element = currentGuess[i];
-            if (element === correctAnswer[i]) {
-                numValsInCorrectPos += 1;
-            }
-
-            if (correctAnswer.includes(element)) {
-                hasCorrectValue = true;
-            }
-        }
-
-        // Time to check for success!
-        if (numValsInCorrectPos === lengthOfAnswer) {
-            setGameState({...gameState, hasWon: true});
-
-        } else {
-            // Guess was incorrect: have to update history and give hint
-
-            let hintEntry = createHint(hasCorrectValue, numValsInCorrectPos);
-            let guessEntry = "";
-
-            // Converting the user's guess from integers to their 'rune' counterparts.
-            for (let i = 0; i < lengthOfAnswer; i++) {
-                guessEntry += mapNumsToLetters[currentGuess[i]];
-            }
-
-            let updatedHistory = history;
-            updatedHistory.unshift([guessEntry, hintEntry]);
-
-            // Update game state based on user's guess
-            setGameState({...gameState,
-                         remainingAttempts: (gameState.remainingAttempts - 1),
-                         history: updatedHistory
-            });
-            // Leaving console.log of the correct answer to make it easier to showcase winning functionality
-            console.log(`correctAnswer: ${correctAnswer[0]}, ${correctAnswer[1]}, ${correctAnswer[2]}, ${correctAnswer[3]}`);
-        }
-    }
 
     // Sets the component on the right side of the screen to a timer or instructions depending on which mode the user selects.
     const componentOnRight = () => {
-        if (data.hardMode) {
-            return <Timer startTime={gameState.timerStartTime} handleTimer={handleTimer} />
+        if (hardMode) {
+            return <Timer />
         } else {
             return <Instructions/>
         }
@@ -225,38 +138,36 @@ const Game = (props) => {
 
     // Displays attempt history on left, game in the middle, and instructions/a timer on the right
     const setUpGamePage = () => {
-        if (remainingAttempts === 0 || gameState.timerRunOut) {
+        if (remainingAttempts === 0 || timerRunOut) {
             return <Lose />;
         } else if (hasWon) {
             return <Win />;
         } else {
             return (
-                <div className="container-2">
+                <div className='container-2'>
                     <AttemptHistory
                         history={history}
                         historyKey={totalAttempts - remainingAttempts}
                         />
-                     <div className="container-3">
-                        <div className="container-4">
+                     <div className='container-3'>
+                        <div className='container-4'>
                              {remainingAttempts === totalAttempts ?
                                 <h1> Enter the correct combination</h1> :
                                 <h1>Pattern Not Matched.</h1>}
-                                <p className="emphasize"> Attempts remaining: {remainingAttempts}</p>
-                                <div className="inputContainer">
+                                <p className='emphasize'> Attempts remaining: {remainingAttempts}</p>
+                                <div className='inputContainer'>
                                 {
                                     currentGuess.map((element, index) => (
                                         <NumberSlider
                                             key={index}
-                                            mapNumsToLetters={mapNumsToLetters}
                                             currentGuess={currentGuess}
+                                            setCurrentGuess={setCurrentGuess}
                                             index={index}
-                                            handleClickUp={handleClickUp}
-                                            handleClickDown={handleClickDown}
                                         />
                                     ))
                                 }
                                 </div>
-                        <button className="mainButtons" onClick={handleSubmit}>submit</button>
+                        <button className='mainButtons' onClick={onSubmit}>submit</button>
                         </div>
                     </div>
                     {componentOnRight()}
@@ -266,9 +177,9 @@ const Game = (props) => {
     };
 
     return (
-        <div className="game-page" >
-            {isLoading ? <img className="loading" src={"eclipse155px.svg"} alt="loading spinner" /> :
-                <div className="container-1">
+        <div className='game-page' >
+            {isLoading ? <img className='loading' data-testid='spinner' src={'eclipse155px.svg'} alt='loading spinner' /> :
+                <div className='container-1'>
                     {setUpGamePage()}
                 </div>
             }
