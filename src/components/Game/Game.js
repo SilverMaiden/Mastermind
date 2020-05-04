@@ -1,20 +1,20 @@
-import React, {useState, useEffect, useContext} from "react";
+import React, {useState, useEffect, useContext} from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import NumberSlider from "./NumberSlider";
+import NumberSlider from './NumberSlider';
 
 //My components
-import Instructions from "../Instructions.js";
-import Timer from "../Timer.js";
-import AttemptHistory from "./AttemptHistory";
-import Lose from "../Lose";
-import Win from "../Win";
+import Instructions from '../Instructions.js';
+import Timer from '../Timer.js';
+import AttemptHistory from './AttemptHistory';
+import Lose from '../Lose';
+import Win from '../Win';
 
 //Importing actions
 import { setUpGame, handleTimer, checkAnswer } from '../../actions/actions';
 
 
 
-// Importing functions to handle the game
+// Importing variables to handle the game
 import {
     mapNumsToLetters,
     lengthOfAnswer,
@@ -22,7 +22,7 @@ import {
     maxRuneValue,
     totalAttempts,
     converter,
-} from './GameHandleFunctions'
+} from './GameVariables'
 
 // import fontawesome library
 import '../../fontawesome.js';
@@ -55,14 +55,14 @@ const Game = (props) => {
      *
      * The structure of the initial store:
      *
-     * correctAnswer - An array containing "lengthOfAnswer" random numbers. Initialized on component mount.
+     * correctAnswer - An array containing 'lengthOfAnswer' random numbers. Initialized on component mount.
      *
      * timerRunOut - Only used in 'hard mode'. Set to false by default. Changes to true when the timer for
      * the user to guess the correct answer reaches 0.
      *
      * hasWon - Set to false by default. Changes to true when the user guesses the correct combination of 'runes'.
      * (This must happen before the user runs out of attempts and/or before the timer reaches 0)
-     * Controls when the "Win" component is mounted.
+     * Controls when the 'Win' component is mounted.
      *
      * remainingAttempts - initialized to totalAttempts when the game first starts. Decreases by 1 every time the user
      * submits a guess of the combination.
@@ -99,7 +99,7 @@ const Game = (props) => {
     const [currentGuess, setCurrentGuess] = useState(new Array(lengthOfAnswer).fill(0));
 
     // Destructuring state to allow us to reference its values directly.
-    // Example: We can now reference the state "isLoading" as isLoading, instead of gameState.isLoading
+    // Example: We can now reference the state 'isLoading' as isLoading, instead of gameState.isLoading
 
 
     /*
@@ -144,18 +144,18 @@ const Game = (props) => {
             return <Win />;
         } else {
             return (
-                <div className="container-2">
+                <div className='container-2'>
                     <AttemptHistory
                         history={history}
                         historyKey={totalAttempts - remainingAttempts}
                         />
-                     <div className="container-3">
-                        <div className="container-4">
+                     <div className='container-3'>
+                        <div className='container-4'>
                              {remainingAttempts === totalAttempts ?
                                 <h1> Enter the correct combination</h1> :
                                 <h1>Pattern Not Matched.</h1>}
-                                <p className="emphasize"> Attempts remaining: {remainingAttempts}</p>
-                                <div className="inputContainer">
+                                <p className='emphasize'> Attempts remaining: {remainingAttempts}</p>
+                                <div className='inputContainer'>
                                 {
                                     currentGuess.map((element, index) => (
                                         <NumberSlider
@@ -167,7 +167,7 @@ const Game = (props) => {
                                     ))
                                 }
                                 </div>
-                        <button className="mainButtons" onClick={onSubmit}>submit</button>
+                        <button className='mainButtons' onClick={onSubmit}>submit</button>
                         </div>
                     </div>
                     {componentOnRight()}
@@ -177,9 +177,9 @@ const Game = (props) => {
     };
 
     return (
-        <div className="game-page" >
-            {isLoading ? <img className="loading" data-testid='spinner' src={"eclipse155px.svg"} alt="loading spinner" /> :
-                <div className="container-1">
+        <div className='game-page' >
+            {isLoading ? <img className='loading' data-testid='spinner' src={'eclipse155px.svg'} alt='loading spinner' /> :
+                <div className='container-1'>
                     {setUpGamePage()}
                 </div>
             }

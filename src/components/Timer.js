@@ -19,7 +19,7 @@ const Timer = (props) => {
                 <div className="content">
                 <img src={'hourglass55px.svg'} alt = "hourglass" />
                 <Countdown
-                date={startTime + 6000}
+                date={startTime + 60000}
                 intervalDelay={0}
                 precision={0}
                 renderer={props => <div>{props.seconds}</div>}

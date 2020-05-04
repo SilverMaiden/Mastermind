@@ -23,7 +23,7 @@ import {
     minRuneValue,
     maxRuneValue,
     totalAttempts,
-} from '../components/Game/GameHandleFunctions';
+} from '../components/Game/GameVariables';
 
 
 const initialState = {
@@ -101,7 +101,6 @@ export const gameReducer = (state = initialState, action) => {
             return ({...state, handleTimerStarted: true});
 
         case HANDLE_TIMER_SUCCESS:
-            console.log(action.payload)
 
             return ({...state,
                     timerStartTime: action.payload.timerStartTime,

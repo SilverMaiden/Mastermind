@@ -71,14 +71,4 @@ test('Hard button on landing page leads to game page', () => {
   expect(currentUrl).toMatch('/game')
 })
 
-  /*
 
-  const upcomingHeader = getByText(/Upcoming/i);
-  const pastHeader = getByText(/Past Events/i);
-  const upcomingEvents = getByTestId('upcoming-carousel');
-  const pastEvents = getByTestId('past-carousel');
-
-  expect(upcomingHeader).toBeInTheDocument();
-  expect(pastHeader).toBeInTheDocument();
-  expect(upcomingEvents).toBeInTheDocument();
-  expect(pastEvents).toBeInTheDocument();*/

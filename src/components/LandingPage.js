@@ -1,8 +1,8 @@
-import React, {useEffect} from "react";
-import {Link} from "react-router-dom";
+import React, {useEffect} from 'react';
+import {Link} from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import {setMode, resetGame} from '../actions/actions';
-import SnowStorm from "react-snowstorm";
+import SnowStorm from 'react-snowstorm';
 
 // The main page of the game, where the user selects the difficulty of the game before starting.
 // All refreshes redirect to here.
@@ -18,14 +18,14 @@ const LandingPage = () => {
     }
 
     return (
-        <div className="landingPage">
+        <div className='landingPage'>
         <SnowStorm />
-            <div className="container">
-               <h1 className="header"> Mastermind </h1>
+            <div className='container'>
+               <h1 className='header'> Mastermind </h1>
                <h4> Choose your difficulty</h4>
-               <div className="modeButtons">
-                   <Link to="/game"><button className="mainButtons" onClick={() => handleClick("easy")}> Easy </button></Link>
-                   <Link to="/game"><button className="mainButtons" onClick={() => handleClick("hard")}> Hard </button></Link>
+               <div className='modeButtons'>
+                   <Link to='/game'><button className='mainButtons' onClick={() => handleClick('easy')}> Easy </button></Link>
+                   <Link to='/game'><button className='mainButtons' onClick={() => handleClick('hard')}> Hard </button></Link>
             </div>
            </div>
         </div>
